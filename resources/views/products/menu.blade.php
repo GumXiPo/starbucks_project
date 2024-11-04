@@ -1,5 +1,3 @@
-<!-- resources/views/products/index.blade.php -->
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -60,6 +58,25 @@
             font-weight: bold;
             color: #28a745; /* Màu cho còn hàng */
         }
+        /* Style cho nút Add to Cart */
+        .add-to-cart-btn {
+            display: block;
+            text-align: center;
+            margin: 15px 0 0 0;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +93,8 @@
                 <p class="availability">Còn hàng: {{ $product->is_available ? 'Còn Hàng' : 'Hết Hàng' }}</p>
                 <p>Số lượng tồn: {{ $product->stock_quantity }}</p>
                 <p>Nhà cung cấp: {{ $product->supplier }}</p>
+                <!-- Nút Add to Cart -->
+                <a href="" class="add-to-cart-btn">Thêm vào giỏ</a>
             </div>
         </div>
         @endforeach

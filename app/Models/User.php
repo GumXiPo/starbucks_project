@@ -25,4 +25,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+     // Một user có một profile
+     public function profile()
+     {
+         return $this->hasOne(Profile::class);
+     }
 }

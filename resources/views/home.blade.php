@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="{{ asset('js/script.js') }}"></script>
 
@@ -13,52 +13,59 @@
 
 <body>
 
-    <header>
-        <figure class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="">
-        </figure>
-        <nav class="main-nav">
-            <ul>
-                <title>Đăng Nhập</title>
-                <li><a href="">Coffee</a></li>
-                <li><a href="{{ route('products.menu') }}">Menu</a></li>
-                <li><a href="">Delivery</a></li>
-                <li><a href="">Contact</a></li>
-                <li><a href="">About</a></li>
-                <li><a href="">Cart</a></li>
-                @if (Auth::check())
-                <p>Xin chào, {{ Auth::user()->full_name }}!</p> <!-- Hiển thị tên người dùng -->
+<header>
+    <figure class="logo">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo">
+    </figure>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="">Coffee</a></li>
+            <li><a href="{{ route('products.menu') }}">Menu</a></li>
+            <li><a href="">Delivery</a></li>
+            <li><a href="">Contact</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Cart</a></li>
+
+            @if (Auth::check())
+                <li>
+                    <a href="{{ route('profile.show') }}">Profile</a> <!-- Nút chuyển đến trang profile -->
+                </li>
+                <li>
+                    <p>Xin chào, {{ Auth::user()->full_name }}!</p> <!-- Hiển thị tên người dùng -->
+                </li>
                 <li>
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
                         <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
                     </form>
                 </li>
-                @else
-
+            @else
+                <li>
+                    <a href="{{ route('login') }}">Login</a>
+                </li>
+                <li>
+                    <a href="{{ route('register') }}">Register</a>
+                </li>
                 <script>
                     alert("Bạn chưa đăng nhập.");
                 </script>
+            @endif
 
-                <a href="{{ route('login') }}">Login</a>
-                <a href="{{ route('register') }}">Register</a>
-                @endif
-
-                @if (session('success'))
+            @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
-                @endif
+            @endif
+        </ul>
+    </nav>
+</header>
 
-            </ul>
-        </nav>
-    </header>
 
     <main>
         <section class="carousel next">
             <div class="list">
                 <article class="item other_1">
-                    <div class="main-content"
+                    <div class="main-content"   
                         style="background-color: #B17457;">
                         <div class="content">
                             <h2>Caffe Latte, a new product</h2>
