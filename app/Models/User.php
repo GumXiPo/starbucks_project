@@ -26,9 +26,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-     // Một user có một profile
-     public function profile()
-     {
-         return $this->hasOne(Profile::class);
-     }
+    // Một user có một profile
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    
 }

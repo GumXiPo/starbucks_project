@@ -28,4 +28,6 @@ class Product extends Model
     ];
 
     public $timestamps = false; // Nếu bảng không có trường created_at và updated_at
+
+    
 }

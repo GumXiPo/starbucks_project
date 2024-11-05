@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 
+
 Route::get('/', function () {
     return view('home');
 });
@@ -32,4 +33,6 @@ Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.e
 
 // Cập nhật thông tin profile
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+
                            
