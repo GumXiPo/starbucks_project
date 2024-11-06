@@ -34,5 +34,11 @@ Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.e
 // Cập nhật thông tin profile
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
+//Search sản phẩm
+Route::get('/products/search', [ProductController::class, 'search'])->name('product.search');
+
+
+
+
 
                            

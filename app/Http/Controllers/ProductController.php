@@ -13,4 +13,17 @@ class ProductController extends Controller
         return view('products.menu', compact('products'));
     }
 
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        // Truy vấn tìm kiếm
+        $products = Product::when($searchTerm, function ($query, $searchTerm) {
+            return $query->where('name', 'like', '%' . $searchTerm . '%');
+        })->get();
+
+        return view('products.menu', compact('products'));
+    }
+
 }
