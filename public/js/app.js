@@ -6,6 +6,27 @@ let countItem = items.length;
 let active = 1;
 let other_1 = null;
 let other_2 = null;
+document.addEventListener("DOMContentLoaded", function () {
+    let swiper = new Swiper(".slider-wrapper", {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 25,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            dynamicBullets: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            0: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+        },
+    });
+});
 next.onclick = () => {
     carousel.classList.remove('prev');
     carousel.classList.add('next');
@@ -52,3 +73,27 @@ const changeSlider = () => {
 let autoPlay = setInterval(() => {
     next.click();
 }, 5000);
+const products = document.querySelector('.products');
+const leftArrow = document.querySelector('.left-arrow');
+const rightArrow = document.querySelector('.right-arrow');
+let currentIndex = 0;
+
+function showProduct(index) {
+    const productWidth = products.clientWidth;
+    products.style.transform = `translateX(${-index * productWidth}px)`;
+}
+
+leftArrow.addEventListener('click', () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        showProduct(currentIndex);
+    }
+});
+
+rightArrow.addEventListener('click', () => {
+    if (currentIndex < products.children.length - 1) {
+        currentIndex++;
+        showProduct(currentIndex);
+    }
+});
+window.addEventListener('resize', () => showProduct(currentIndex));

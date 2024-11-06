@@ -84,7 +84,7 @@
     <div class="product-menu">
         @foreach($products as $product)
         <div class="product-item">
-            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
+            <img src="{{ asset('images/product/' . $product->image) }}" alt="{{ $product->name }}">
             <div class="product-info">
                 <h2>{{ $product->name }}</h2>
                 <p>{{ $product->description }}</p>
