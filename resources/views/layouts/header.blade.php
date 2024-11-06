@@ -38,10 +38,7 @@
             @else
                 <ul>
                     <li>
-                        <a href="{{ route('login') }}">Login</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ route('login') }}">Sign In</a>
                     </li>
                 </ul>
             @endif

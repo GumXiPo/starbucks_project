@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\Auth\AuthController;
+
 
 Route::get('/', function () {
     return view('home');
 });
 
-//Route đăng ký
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login'); // Hiển thị form đăng nhập
+Route::post('login', [AuthController::class, 'login']); // Xử lý đăng nhập
 
-// Route đăng nhập
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register'); // Hiển thị form đăng ký
+Route::post('register', [AuthController::class, 'register']); // Xử lý đăng ký
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout'); // Xử lý đăng xuất
+
 
 
 
