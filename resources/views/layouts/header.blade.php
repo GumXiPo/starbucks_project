@@ -1,4 +1,5 @@
 <header>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @if (session('success'))
         <script>
             alert("{{ session('success') }}");
@@ -10,18 +11,19 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Logo">
             </figure>
             <ul>
-                <li><a href="">Coffee</a></li>
+                <li><a href="/">Coffee</a></li>
                 <li><a href="{{ route('products.menu') }}">Menu</a></li>
                 <li><a href="">Delivery</a></li>
                 <li><a href="">Contact</a></li>
                 <li><a href="">About</a></li>
+                <li><a href="">Cart <i class="fa-solid fa-cart-shopping"></i></a>.</li>
             </ul>
         </div>
         <div class="nav-right">
             @if (Auth::check())
                 <ul>
                     <li>
-                        <a href="{{ route('profile.show') }}">Profile</a>
+                        <a href="{{ route('profile.show') }}">Profile <i class="fa-solid fa-user"></i></a>
                     </li>
                     <li>
                         <p>Xin chào, {{ Auth::user()->username }} !</p>
