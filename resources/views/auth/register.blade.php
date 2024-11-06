@@ -406,15 +406,6 @@
       <div class="box">
         <div class="inner-box">
           <div class="forms-wrap">
-            @if ($errors->any())
-                <div class="error">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <form action="{{ route('login') }}" method="POST" autocomplete="off" class="sign-in-form">
             @csrf
               <div class="logo">
@@ -450,7 +441,16 @@
                   />
                   <label for="password">Password</label>
                 </div>
-
+                 <!-- Hiển thị thông báo lỗi nếu có -->
+                @if ($errors->any())
+                    <div class="error">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <input type="submit" value="Sign In" class="sign-btn" />
 
                 <p class="text">
