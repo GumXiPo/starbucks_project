@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -7,21 +6,22 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    // Hiển thị danh sách sản phẩm với phân trang
     public function menu()
     {
-        $products = Product::all();
+        $products = Product::paginate(12);  // Phân trang 12 sản phẩm mỗi trang
         return view('products.menu', compact('products'));
     }
 
-
+    // Tìm kiếm sản phẩm với phân trang
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search');
-
-        // Truy vấn tìm kiếm
-        $products = Product::when($searchTerm, function ($query, $searchTerm) {
-            return $query->where('name', 'like', '%' . $searchTerm . '%');
-        })->get();
+        $search = $request->input('search');
+        
+        // Tìm sản phẩm theo tên hoặc mô tả với phân trang
+        $products = Product::where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('description', 'LIKE', '%' . $search . '%')
+                    ->paginate(12);
 
         return view('products.menu', compact('products'));
     }
@@ -33,6 +33,7 @@ class ProductController extends Controller
         return view('products.adminproduct', compact('products'));
     }
 
+<<<<<<< HEAD
 
     public function edit($id)
     {
@@ -80,3 +81,16 @@ class ProductController extends Controller
 
 
 }
+=======
+    // Hiển thị chi tiết sản phẩm
+    public function show($product_id)
+    {
+        // Tìm sản phẩm theo product_id
+        $product = Product::findOrFail($product_id);
+        
+        // Trả về view với sản phẩm chi tiết
+        return view('products.show', compact('product'));
+    }
+}
+
+>>>>>>> 822b6999cee34dade0b87d68f5de6c03369aeb5b

@@ -16,22 +16,23 @@
                 <li><a href="">Delivery</a></li>
                 <li><a href="">Contact</a></li>
                 <li><a href="">About</a></li>
-                <li><a href="">Cart <i class="fa-solid fa-cart-shopping"></i></a>.</li>
+                
             </ul>
         </div>
         <div class="nav-right">
             @if (Auth::check())
                 <ul>
                     <li>
-                        <a href="{{ route('profile.show') }}">Profile <i class="fa-solid fa-user"></i></a>
-                    </li>
-                    <li>
                         <p>Xin chào, {{ Auth::user()->username }} !</p>
                     </li>
                     <li>
+                        <a href="{{ route('profile.show') }}"><i class="fa-solid fa-user"></i></a>
+                    </li>
+                    <li><a href=""><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                             @csrf
-                            <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                            <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"><i class="fa-solid fa-right-from-bracket"></i></a>
                         </form>
                     </li>
                 </ul>

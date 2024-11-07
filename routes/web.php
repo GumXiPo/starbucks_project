@@ -24,6 +24,7 @@ Route::post('register', [AuthController::class, 'register']); // Xử lý đăng
 Route::post('logout', [AuthController::class, 'logout'])->name('logout'); // Xử lý đăng xuất
 
 
+<<<<<<< HEAD
 
 //Route product
 // Route cho danh sách sản phẩm
@@ -36,7 +37,25 @@ Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('pro
 Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::get('/products', [ProductController::class, 'menu'])->name('products.menu');
 //Search sản phẩm
+=======
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
+
+// Hiển thị trang chỉnh sửa profile
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+
+// Cập nhật thông tin profile
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+// Hiển thị danh sách sản phẩm
+Route::get('/products', [ProductController::class, 'menu'])->name('products.menu');
+>>>>>>> 822b6999cee34dade0b87d68f5de6c03369aeb5b
 Route::get('/products/search', [ProductController::class, 'search'])->name('product.search');
+Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product.show');
+
+
+
+
+
 
 
 

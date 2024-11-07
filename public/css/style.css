@@ -342,13 +342,6 @@ nav.main-nav ul li a::after {
 nav.main-nav ul li a:hover::after {
     width: 100%; /* Mở rộng đường gạch dưới khi hover */
 }
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
 .product-section {
     display: flex;
     justify-content: space-between;
@@ -733,7 +726,7 @@ nav.main-nav ul li a:hover::after {
     margin: 5px 0;
     color: #666;
 }
-.price {
+.price_product {
     font-size: 1.1em;
     color: #d9534f;
     font-weight: bold;
@@ -962,6 +955,7 @@ nav.main-nav ul li a:hover::after {
 .prev .list .item.other_2 .main-content{
     opacity: 0;
 }
+
 @media screen and (max-width: 1023px){
     :root{
         --calculate: 1;
