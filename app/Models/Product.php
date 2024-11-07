@@ -26,6 +26,7 @@ class Product extends Model
         'stock_quantity',
         'supplier',
     ];
+    
 
     public $timestamps = false; // Nếu bảng không có trường created_at và updated_at
 
