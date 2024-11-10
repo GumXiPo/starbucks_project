@@ -1,40 +1,35 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\AuthController;
 
-// Route trang chủ
+
 Route::get('/', function () {
     return view('home');
-})->name('home');
-
-// Nhóm route cho Auth (Đăng nhập, Đăng ký, Đăng xuất)
-Route::prefix('auth')->group(function () {
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login'); // Hiển thị form đăng nhập
-    Route::post('login', [AuthController::class, 'login']); // Xử lý đăng nhập
-    Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register'); // Hiển thị form đăng ký
-    Route::post('register', [AuthController::class, 'register']); // Xử lý đăng ký
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout'); // Xử lý đăng xuất
 });
+//Route admin
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-// Nhóm route cần xác thực (đăng nhập)
-Route::middleware(['auth'])->group(function () {
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login'); // Hiển thị form đăng nhập
+Route::post('login', [AuthController::class, 'login']); // Xử lý đăng nhập
 
-    // Giỏ hàng
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/add-to-cart/{productId}', [CartController::class, 'addToCart'])->name('cart.add')
-    ->where('productId', '[0-9]+'); // Kiểm tra productId là số nguyên
-});
+Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register'); // Hiển thị form đăng ký
+Route::post('register', [AuthController::class, 'register']); // Xử lý đăng ký
 
-// Các route cho sản phẩm
+Route::post('logout', [AuthController::class, 'logout'])->name('logout'); // Xử lý đăng xuất
+
+
+
+//Route product
+// Route cho danh sách sản phẩm
+Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::get('/products', [ProductController::class, 'menu'])->name('products.menu');
+//Search sản phẩm
 Route::get('/products/search', [ProductController::class, 'search'])->name('product.search');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show')
-    ->where('id', '[0-9]+'); // Kiểm tra id là số nguyên
+Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product.show');

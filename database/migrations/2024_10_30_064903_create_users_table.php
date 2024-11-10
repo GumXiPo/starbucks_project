@@ -19,7 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('password', 255);         // Mật khẩu đã mã hóa
             $table->string('email', 100)->unique();  // Email, duy nhất
             $table->string('full_name', 100)->nullable();        // Họ và tên
-            $table->string('role', 50);              // Vai trò (admin, employee)
+            $table->string('phone_number', 15)->nullable();  // Số điện thoại
+            $table->string('address', 255)->nullable();  // Địa chỉ
+            $table->string('role', 50)->default('user');              // Vai trò (admin, employee)
             $table->timestamp('created_at')->nullable()->useCurrent(); // Ngày tạo
             $table->timestamp('updated_at')->nullable()->useCurrent(); // Ngày cập nhật
             $table->boolean('is_active')->default(true);  // Trạng thái tài khoản
