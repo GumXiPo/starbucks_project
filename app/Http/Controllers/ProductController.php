@@ -27,12 +27,9 @@ class ProductController extends Controller
     }
 
     // Hiển thị chi tiết sản phẩm
-    public function show($product_id)
+    public function show($id)
     {
-        // Tìm sản phẩm theo product_id
-        $product = Product::findOrFail($product_id);
-        
-        // Trả về view với sản phẩm chi tiết
+        $product = Product::findOrFail($id);
         return view('products.show', compact('product'));
     }
 }
