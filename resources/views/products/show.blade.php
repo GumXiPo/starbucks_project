@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
-       /* Định nghĩa các biến màu sắc và giá trị */
+        /* Định nghĩa các biến màu sắc và giá trị */
         :root {
             --textColor: #444444;
             --gray: #bbb;
@@ -34,7 +34,6 @@
             margin: auto;
             display: flex;
             justify-content: center;
-
             color: var(--textColor);
         }
 
@@ -44,7 +43,6 @@
             max-width: 900px;
             justify-content: center;
             display: flex;
-            /* flex-direction: column; */
             align-items: center;
         }
 
@@ -54,18 +52,6 @@
             font-size: 14px;
         }
 
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--gray);
-        }
-
-        /* Định dạng sản phẩm */
         .product-image {
             display: flex;
             flex-direction: column;
@@ -81,7 +67,7 @@
             max-width: 300px;
             position: relative;
             left: 0;
-            margin: 40px auto;  /* Căn giữa hình ảnh */
+            margin: 40px auto;
             filter: drop-shadow(-6px 40px 23px rgba(0, 0, 0, 0.5));
         }
 
@@ -119,131 +105,28 @@
             text-decoration: line-through;
         }
 
-        .product-details .product-details-header {
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .product-details article > h5 {
-            margin: 0;
-        }
-
-        .product-details article > p {
-            color: var(--gray);
-            margin: .5em 0;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .product-details .controls_detail {
-            margin: 3em 0;
-            display: flex;
-        }
-
-        .product-details .controls_detail .option {
-            margin-top: 12px;
-            display: inline-block;
-            position: relative;
-        }
-
-        .product-details .controls_detail .option:hover {
-            color: var(--textColor);
-        }
-
-        .product-details .controls_detail ul {
-            display: flex;
-            margin: 15px 5px;
-        }
-
-        .product-details .color li + li {
-            margin-left: 15px;
-        }
-
-        .product-details .colors {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: block;
-        }
-
-        .product-details .rate a {
-            font-size: 18px;
-            color: var(--gray);
-        }
-
-        .product-details .rate a.active,
-        .product-details .rate a:hover {
-            color: var(--star);
-        }
-
-        .dots {
-            display: flex;
-            margin-top: 40px;
-        }
-
-        .dots > a {
-            background-color: var(--dot);
-            width: 10px;
-            height: 10px;
-            margin: 0 4px;
-            border-radius: 50%;
-        }
-
-        .dots > a:hover,
-        .dots > a.active {
-            background-color: white;
-        }
-
-        .size-option {
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            padding-bottom: 10px; /* Giảm khoảng cách dưới văn bản */
-        }
-
         .size-options {
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            padding: 20px;
-            width: 100%; /* Đảm bảo phần tử chiếm toàn bộ chiều rộng */
-            gap: 10px; /* Khoảng cách giữa các tùy chọn */
+            padding: 10px 0;
+            gap: 20px;
         }
 
-        .size-option p {
-            margin: 0;
-            z-index: 1; /* Đặt văn bản lên trên */
+        .size-option {
+            padding: 10px 20px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .size-option.selected {
-            color: #7ED4AD; /* Thêm màu sắc cho tùy chọn đã chọn */
+            background-color: var(--pgb);
+            color: white;
         }
 
-        .size-option .size-image {
-            display: none; /* Ẩn tất cả các hình ảnh */
-        }
-
-        .size-option.selected .size-image {
-            display: block; /* Hiển thị hình ảnh đã chọn */
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .size-image {
-            display: none;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-
-        .size-image.selected {
-            display: block;
+        .size-option:hover {
+            background-color: var(--gray);
         }
 
         .footer {
@@ -280,37 +163,6 @@
             color: white;
         }
 
-        .footer a img {
-            width: 24px;
-            opacity: .8;
-        }
-
-        .footer a:hover img {
-            opacity: 1;
-        }
-
-        @keyframes moveCircle {
-            0% {
-                transform: translate(-50%, -50%) translateX(0);
-            }
-            100% {
-                transform: translate(-50%, -50%) translateX(20px); /* Di chuyển qua lại 20px */
-            }
-        }
-
-        .size-option.selected .circle {
-            background-color: #42c8cb; /* Màu nền khi được chọn */
-        }
-
-        @media (max-width: 600px) {
-            .product-details .rate {
-                position: absolute;
-                top: 12px;
-                right: 10px;
-                margin-top: 0;
-            }
-        }
-
         @media (max-width: 900px) {
             .container_detail {
                 display: flex;
@@ -341,25 +193,31 @@
     <div class="container_detail">
         <div class="product-image">
             <div class="product-pic">
-                <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->product_name }}" width="300">
+                <img src="{{ asset('images/product/' . $product->image) }}" alt="{{ $product->name }}" width="300">
             </div>
         </div>
         <div class="product-details">
             <div class="product-details-header">
-                <h5 class="title_detail">{{ $product->product_name }}</h5>
-                <span class="colorCat">{{ $product->category->name }}</span>
+                <h5 class="title_detail">{{ $product->name }}</h5>
+                <span class="colorCat">{{ $product->category }}</span>
                 <div class="price_detail">
                     <span class="current">{{ number_format($product->price, 0, '.', ',') }} VND</span>
                 </div>
             </div>
+
+            <!-- Chọn kích thước -->
             <div class="size-options">
-                @foreach($product->sizes as $size)
-                    <div class="size-option" data-size="{{ $size->id }}">
-                        <p>{{ $size->name }}</p>
-                        <img class="size-image" src="{{ asset('storage/sizes/' . $size->image) }}" alt="size" />
-                    </div>
-                @endforeach
+                <div class="size-option" data-size="XS">
+                    <p>XS</p>
+                </div>
+                <div class="size-option" data-size="S">
+                    <p>S</p>
+                </div>
+                <div class="size-option" data-size="XL">
+                    <p>XL</p>
+                </div>
             </div>
+
             <div class="footer">
                 <button id="add-to-cart-btn">
                     <img src="https://cdn3.iconfinder.com/data/icons/e-commerce-1/100/Cart_Add-512.png" alt="Add to Cart">
@@ -370,51 +228,51 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function () {
-    let selectedSize = null;
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectedSize = null;
 
-    // Xử lý sự kiện chọn size
-    document.querySelectorAll('.size-option').forEach(option => {
-        option.addEventListener('click', function () {
-            document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedSize = option.dataset.size;
+            // Xử lý sự kiện chọn size
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedSize = option.dataset.size; // Lấy kích thước được chọn
+                });
+            });
+
+            // Xử lý sự kiện thêm vào giỏ hàng
+            document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+                if (!selectedSize) {
+                    alert('Vui lòng chọn kích thước');
+                    return;
+                }
+                // Lưu trữ vào giỏ hàng
+                addToCart(selectedSize);
+            });
+
+            function addToCart(size) {
+                // Get the product_id using Blade syntax and PHP's json_encode
+                const productId = <?php echo json_encode($product->product_id); ?>;
+
+                // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+                fetch('/add-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ product_id: productId, size: size })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Sản phẩm đã được thêm vào giỏ hàng');
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                });
+            }
         });
-    });
-
-    // Xử lý sự kiện thêm vào giỏ hàng
-    document.getElementById('add-to-cart-btn').addEventListener('click', function () {
-        if (!selectedSize) {
-            alert('Vui lòng chọn kích thước');
-            return;
-        }
-        // Lưu trữ vào giỏ hàng
-        addToCart(selectedSize);
-    });
-
-    function addToCart(sizeId) {
-        // Get the product_id using Blade syntax and PHP's json_encode
-        const productId = <?php echo json_encode($product->product_id); ?>;
-
-        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
-        fetch('/add-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ product_id: productId, size_id: sizeId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Sản phẩm đã được thêm vào giỏ hàng');
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-        });
-    }
-});
-
     </script>
 </body>
 </html>
+        

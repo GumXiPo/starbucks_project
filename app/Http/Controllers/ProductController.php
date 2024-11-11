@@ -64,11 +64,7 @@ class ProductController extends Controller
         $product->update($validated);
 
         // Cập nhật trạng thái 'is_available' dựa vào stock_quantity
-        if ($product->stock_quantity == 0) {
-            $product->is_available = false; // Đánh dấu là hết hàng
-        } else {
-            $product->is_available = true; // Đánh dấu là còn hàng
-        }
+        $product->is_available = $product->stock_quantity > 0;
 
         // Lưu lại thông tin
         $product->save();
@@ -79,8 +75,8 @@ class ProductController extends Controller
 
     // Hiển thị chi tiết sản phẩm
     public function show($id)
-    {
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
-    }
+{
+    $product = Product::findOrFail($id);
+    return view('products.show', compact('product'));
+}
 }

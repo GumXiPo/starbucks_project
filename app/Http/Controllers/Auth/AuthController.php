@@ -24,7 +24,7 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             // Kiểm tra xem người dùng có phải admin không
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admins.dashboard')->with('success', 'Đăng nhập thành công với tư cách quản trị viên.');
+                return redirect()->route('dashboard')->with('success', 'Đăng nhập thành công với tư cách quản trị viên.');
             } else {
                 return redirect()->intended('/')->with('success', 'Đăng nhập thành công.');
             }
