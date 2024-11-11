@@ -1,5 +1,10 @@
 <?php
+<<<<<<< HEAD
 use App\Http\Controllers\Admin\AdminController;
+=======
+
+use App\Http\Controllers\AdminController;
+>>>>>>> 2c04206df993b1b253408b5843d936b3eb07545a
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +37,7 @@ Route::post('register', [AuthController::class, 'register']); // Xử lý đăng
 
 Route::post('logout', [AuthController::class, 'logout'])->name('logout'); // Xử lý đăng xuất
 
+<<<<<<< HEAD
 // Route cho sản phẩm
 Route::get('/products/menu', [ProductController::class, 'menu'])->name('products.menu');
 Route::get('/products/admin', [ProductController::class, 'index'])->name('products.adminproduct');
@@ -53,3 +59,14 @@ Route::get('profile/editadminProfile/{id}', [ProfileController::class, 'editadmi
 // Cập nhật thông tin profile
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'updateadminProfile'])->name('profile.updateadminProfile');
+=======
+
+
+//Route product
+// Route cho danh sách sản phẩm
+Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
+Route::get('/products', [ProductController::class, 'menu'])->name('products.menu');
+//Search sản phẩm
+Route::get('/products/search', [ProductController::class, 'search'])->name('product.search');
+Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product.show');
+>>>>>>> 2c04206df993b1b253408b5843d936b3eb07545a

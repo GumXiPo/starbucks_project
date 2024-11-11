@@ -411,7 +411,7 @@
                             <span class="card__price">{{ number_format($product->price, 0, ',', '.') }} VNĐ</span>
                         </div>
                         <img src="{{ asset('images/bg-starbuck.jpg') }}" alt="image" class="card__bg">
-                        <a href="{{ route('product.show', ['product_id' => $product->product_id]) }}" class="card__button">View More <i class="ri-arrow-right-line"></i></a>
+                        <a href="{{ route('product.show', ['id' => $product->product_id]) }}" class="card__button">See More <i class="ri-arrow-right-line"></i></a>
                     </article>
                 @endforeach
             </div>
@@ -420,17 +420,5 @@
             </div>
         @endif
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const titles = document.querySelectorAll('.card__title');
-            titles.forEach(function(title) {
-                let text = title.textContent.trim();
-                if (text.length > 15) {
-                    title.textContent = text.slice(0, 15) + '...';
-                }
-            });
-        });
-    </script>
 </body>
 </html>

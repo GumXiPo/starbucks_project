@@ -26,7 +26,18 @@ class Product extends Model
         'stock_quantity',
         'supplier',
     ];
-    
+    public function getPriceBySize($size)
+    {
+        // Ví dụ: Trả về giá khác nhau tùy thuộc vào size
+        switch ($size) {
+            case 'small':
+                return $this->price * 0.9; // Ví dụ: giảm 10% cho size nhỏ
+            case 'large':
+                return $this->price * 1.1; // Ví dụ: tăng 10% cho size lớn
+            default:
+                return $this->price; // Giá mặc định
+        }
+    }
 
     public $timestamps = false; // Nếu bảng không có trường created_at và updated_at
 
