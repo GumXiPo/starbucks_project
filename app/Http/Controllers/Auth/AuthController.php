@@ -16,43 +16,35 @@ class AuthController extends Controller
     }
 
     // Xử lý đăng nhập
+    // app/Http/Controllers/Auth/AuthController.php
+
     public function login(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
-        // Thử đăng nhập người dùng
+        // Kiểm tra đăng nhập
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            // Kiểm tra xem tài khoản có hoạt động không
-            if (Auth::user()->is_active) {
-                // Kiểm tra vai trò của người dùng
-                if (Auth::user()->role === 'admin') {
-                    // Quản trị viên được chuyển hướng đến trang quản trị
-                    return redirect()->intended('/admin')->with('success', 'Đăng nhập thành công với tư cách quản trị viên.');
-                } else {
-                    // Người dùng bình thường được chuyển hướng về trang người dùng
-                    return redirect()->intended('/')->with('success', 'Đăng nhập thành công.');
-                }
+            // Kiểm tra xem người dùng có phải admin không
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admins.dashboard')->with('success', 'Đăng nhập thành công với tư cách quản trị viên.');
             } else {
-                // Đăng xuất nếu tài khoản không hoạt động
-                Auth::logout();
-                return back()->withErrors(['email' => 'Tài khoản của bạn đã bị vô hiệu hóa.']);
+                return redirect()->intended('/')->with('success', 'Đăng nhập thành công.');
             }
         }
-
-        // Nếu đăng nhập thất bại
         return back()->withErrors(['email' => 'Thông tin đăng nhập không chính xác.']);
     }
 
-    // Đăng xuất người dùng
+
+    // Xử lý đăng xuất người dùng
+    // app/Http/Controllers/Auth/AuthController.php
+
     public function logout(Request $request)
     {
         Auth::logout(); // Đăng xuất người dùng
+        $request->session()->invalidate(); // Xóa session hiện tại
+        $request->session()->regenerateToken(); // Tạo token mới để bảo mật
+
         return redirect('/')->with('success', 'Bạn đã đăng xuất thành công.');
     }
+
 
     // Hiển thị form đăng ký
     public function showRegistrationForm()

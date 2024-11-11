@@ -31,6 +31,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
-
-    
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }
