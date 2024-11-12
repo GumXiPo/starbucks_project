@@ -16,7 +16,9 @@
                 <li><a href="">Delivery</a></li>
                 <li><a href="">Contact</a></li>
                 <li><a href="">About</a></li>
-                
+                <li>
+                    <a href="{{ route('feedback.feedbackshow') }}"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
+                </li>
             </ul>
         </div>
         <div class="nav-right">

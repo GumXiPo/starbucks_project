@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Controllers\FeedbackController;
 
 Route::get('/', function () {
     return view('home');
@@ -57,4 +58,14 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.ad
 Route::middleware('auth')->group(function() {
   Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
   Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+});
+
+
+//Feedback
+Route::middleware('auth')->group(function() {
+  // Hiển thị danh sách phản hồi
+  Route::get('/feedback', [FeedbackController::class, 'feedbackshow'])->name('feedback.feedbackshow');
+  
+  // Gửi phản hồi mới
+  Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });

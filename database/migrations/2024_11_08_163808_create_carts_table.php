@@ -1,6 +1,5 @@
 <?php
 
-// Migration tạo bảng carts
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,27 +8,21 @@ class CreateCartsTable extends Migration
 {
     public function up()
     {
-        Schema::create('cart_items', function (Blueprint $table) {
-            $table->id(); // ID của bản ghi trong bảng cart_items
-            $table->unsignedBigInteger('cart_id'); // Khóa ngoại tới bảng carts
-            $table->unsignedBigInteger('product_id'); // Khóa ngoại tới bảng products
-            $table->unsignedBigInteger('product_detail_id'); // Khóa ngoại tới bảng product_details
-            $table->integer('quantity')->default(1); // Số lượng sản phẩm
-            $table->timestamps();
+        // Tạo bảng carts
+        Schema::create('carts', function (Blueprint $table) {
+            $table->id(); // Tạo cột 'id' làm khóa chính
+            $table->unsignedBigInteger('user_id'); // Khóa ngoại tham chiếu đến bảng users (nếu liên kết với người dùng)
+            $table->string('status')->default('pending'); // Trạng thái giỏ hàng (ví dụ: 'pending', 'completed')
+            $table->string('size')->nullable(); // Cột size cho giỏ hàng (nếu cần)
+            $table->timestamps(); // Tạo các cột 'created_at' và 'updated_at'
     
-            // Khóa ngoại tới bảng carts
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-            // Khóa ngoại tới bảng products
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
-            // Khóa ngoại tới bảng product_details
-            $table->foreign('product_detail_id')->references('detail_id')->on('product_details')->onDelete('cascade');
+            // Khóa ngoại đến bảng users
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-    
 
     public function down()
     {
         Schema::dropIfExists('carts');
     }
 }
-
