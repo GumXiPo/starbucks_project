@@ -9,12 +9,14 @@ class Cart extends Model
 {
     use HasFactory;
 
-    // Thêm size vào danh sách các thuộc tính có thể gán
+    protected $primaryKey = 'detail_id';
     protected $fillable = [
         'user_id',
         'product_id',
         'quantity',
-        'size' // Thêm size vào
+        'size',
+        'sugar_content',
+        'additional_info'
     ];
 
     // Liên kết đến sản phẩm
