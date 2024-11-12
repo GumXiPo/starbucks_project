@@ -16,9 +16,8 @@ class CreateProductDetailsTable extends Migration
         Schema::create('product_details', function (Blueprint $table) {
             $table->id('detail_id');                      // Mã chi tiết sản phẩm, tự động tăng
             $table->unsignedBigInteger('product_id');     // Khóa ngoại tới bảng products
-            $table->text('ingredients')->nullable();      // Thành phần (nullable)
             $table->string('size', 50)->nullable();       // Kích thước sản phẩm (nullable)
-            $table->string('color', 50)->nullable();      // Màu sắc sản phẩm (nullable)
+            $table->text('sugar_content')->nullable();    // Lượng đường (nullable)
             $table->text('additional_info')->nullable();  // Thông tin bổ sung (nullable)
             $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade'); // Khóa ngoại
         });

@@ -58,3 +58,7 @@ Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'upd
 //Cart
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 
+Route::middleware('auth')->group(function() {
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart/{product_id}/{detail_id}', [CartController::class, 'addToCart'])->name('cart.add');
+});

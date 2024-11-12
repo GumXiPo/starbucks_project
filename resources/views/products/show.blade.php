@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -151,11 +152,11 @@
             background: linear-gradient(to bottom, var(--bgb) 0%, var(--bgt) 100%);
         }
 
-        .footer button > img {
+        .footer button>img {
             width: 31px;
         }
 
-        .footer button > span {
+        .footer button>span {
             font-size: 18px;
             text-transform: uppercase;
             font-weight: 700;
@@ -187,8 +188,29 @@
                 max-width: 500px;
             }
         }
+
+        .sugar-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .sugar-option {
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .sugar-option.selected {
+            background-color: #4CAF50;
+            /* Màu nền khi chọn */
+            color: white;
+            border-color: #4CAF50;
+        }
     </style>
 </head>
+
 <body>
     <div class="container_detail">
         <div class="product-image">
@@ -218,8 +240,24 @@
                 </div>
             </div>
 
+            <!-- Chọn lượng đường -->
+            <div class="sugar-options">
+                <div class="sugar-option" data-sugar="30">
+                    <p>30%</p>
+                </div>
+                <div class="sugar-option" data-sugar="50">
+                    <p>50%</p>
+                </div>
+                <div class="sugar-option" data-sugar="100">
+                    <p>100%</p>
+                </div>
+            </div>
+
+            <!-- Thêm vào giỏ -->
+            <input type="number" name="quantity" id="quantity" value="1" min="1" style="width: 50px; margin-top: 10px;">
+
             <div class="footer">
-                <button id="add-to-cart-btn">
+                <button type="button" id="add-to-cart-btn">
                     <img src="https://cdn3.iconfinder.com/data/icons/e-commerce-1/100/Cart_Add-512.png" alt="Add to Cart">
                     <span>Thêm vào giỏ</span>
                 </button>
@@ -227,52 +265,71 @@
         </div>
     </div>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let selectedSize = null;
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedSize = null;
+        let selectedSugar = '50'; // Đặt giá trị mặc định cho lượng đường
 
-            // Xử lý sự kiện chọn size
-            document.querySelectorAll('.size-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedSize = option.dataset.size; // Lấy kích thước được chọn
-                });
+        // Xử lý sự kiện chọn size
+        document.querySelectorAll('.size-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedSize = option.dataset.size; // Lấy kích thước được chọn
             });
-
-            // Xử lý sự kiện thêm vào giỏ hàng
-            document.getElementById('add-to-cart-btn').addEventListener('click', function () {
-                if (!selectedSize) {
-                    alert('Vui lòng chọn kích thước');
-                    return;
-                }
-                // Lưu trữ vào giỏ hàng
-                addToCart(selectedSize);
-            });
-
-            function addToCart(size) {
-                // Get the product_id using Blade syntax and PHP's json_encode
-                const productId = <?php echo json_encode($product->product_id); ?>;
-
-                // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
-                fetch('/add-to-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({ product_id: productId, size: size })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Sản phẩm đã được thêm vào giỏ hàng');
-                })
-                .catch(error => {
-                    console.error('Lỗi:', error);
-                });
-            }
         });
-    </script>
+
+        // Xử lý sự kiện chọn lượng đường
+        document.querySelectorAll('.sugar-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.sugar-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedSugar = option.dataset.sugar; // Lấy lượng đường được chọn
+            });
+        });
+
+        // Xử lý sự kiện thêm vào giỏ hàng
+        document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+            if (!selectedSize) {
+                alert('Vui lòng chọn kích thước');
+                return;
+            }
+
+            const quantity = document.getElementById('quantity').value; // Lấy số lượng từ input
+
+            // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+            addToCart(selectedSize, selectedSugar, quantity);
+        });
+
+        function addToCart(size, sugar, quantity) {
+            // Get the product_id using Blade syntax and PHP's json_encode
+            const productId = <?php echo json_encode($product->product_id); ?>;
+
+            // Gửi yêu cầu AJAX đến backend
+            fetch('{{ route('cart.add', ':productId') }}'.replace(':productId', productId), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ product_id: productId, size: size, sugar: sugar, quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Sản phẩm đã được thêm vào giỏ hàng');
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+            });
+        }
+    });
+</script>
+
+
+
 </body>
+
 </html>
-        
