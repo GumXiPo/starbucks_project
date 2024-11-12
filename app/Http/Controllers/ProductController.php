@@ -16,12 +16,33 @@ class ProductController extends Controller
     // Tìm kiếm sản phẩm với phân trang
     public function search(Request $request)
     {
-        $search = $request->input('search');
-        
-        // Tìm sản phẩm theo tên hoặc mô tả với phân trang
-        $products = Product::where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('description', 'LIKE', '%' . $search . '%')
-                    ->paginate(12);
+        $query = Product::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Thêm logic sắp xếp
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $products = $query->paginate(12);
 
         return view('products.menu', compact('products'));
     }

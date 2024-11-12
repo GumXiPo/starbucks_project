@@ -357,6 +357,24 @@
         width: 17px;
         margin-top: 3px;
         }
+        /* Tăng độ sáng cho các tùy chọn trong dropdown */
+        select.input {
+            background-color: #7ED4AD; /* Màu nền sáng hơn cho dropdown */
+            border: 1px solid #ddd; /* Đường viền mờ */
+            transition: background-color 0.3s ease, border 0.3s ease; /* Hiệu ứng chuyển màu nền và viền */
+        }
+
+        /* Khi hover vào dropdown */
+        select.input:hover {
+            background-color: #f2f2f2; /* Màu nền sáng hơn khi hover */
+            border-color: #7ED4AD; /* Màu viền sáng hơn */
+        }
+
+        /* Khi chọn giá trị trong dropdown */
+        select.input:focus {
+            background-color: #e8f5e9; /* Màu nền khi focus */
+            border-color: #4caf50; /* Màu viền khi focus */
+        }
         /*=============== BREAKPOINTS ===============*/
         /* For small devices */
         @media screen and (max-width: 300px) {
@@ -387,9 +405,17 @@
     @include('layouts.header')
     <div class="menu-search-container">
         <h1>Menu</h1>
-        <!-- Form tìm kiếm -->
         <form class="form" action="{{ route('product.search') }}" method="GET">
-            <input class="input" placeholder="Tìm kiếm sản phẩm..." type="text" name="search" value="{{ request('search') }}">
+            <input class="input" placeholder="Search" type="text" name="search" value="{{ request('search') }}">
+            
+            <!-- Dropdown chọn sắp xếp -->
+            <select name="sort" class="input" onchange="this.form.submit()">
+                <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>A-Z Names</option>
+                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Z-A Names</option>
+                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
+                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
+            </select>
+
             <button class="reset" type="reset">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -411,7 +437,7 @@
                             <span class="card__price">{{ number_format($product->price, 0, ',', '.') }} VNĐ</span>
                         </div>
                         <img src="{{ asset('images/bg-starbuck.jpg') }}" alt="image" class="card__bg">
-                        <a href="{{ route('product.show', ['product_id' => $product->product_id]) }}"class="card__button">See More <i class="ri-arrow-right-line"></i></a>
+                        <a href="{{ route('product.show', ['product_id' => $product->product_id]) }}" class="card__button">See More <i class="ri-arrow-right-line"></i></a>
                     </article>
                 @endforeach
             </div>
