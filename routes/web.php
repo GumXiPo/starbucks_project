@@ -20,10 +20,6 @@ Route::prefix('admins')->middleware(EnsureUserIsAdmin::class)->group(function ()
   Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');  
 });
 
-
-
-
-
 // Đăng nhập và đăng ký
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login'); // Hiển thị form đăng nhập
 Route::post('login', [AuthController::class, 'login']); // Xử lý đăng nhập
@@ -59,6 +55,6 @@ Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'upd
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 
 Route::middleware('auth')->group(function() {
-    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
-    Route::post('/cart/{product_id}/{detail_id}', [CartController::class, 'addToCart'])->name('cart.add');
+  Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
+  Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 });
