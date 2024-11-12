@@ -41,9 +41,6 @@ class Product extends Model
 
     public $timestamps = false; // Nếu bảng không có trường created_at và updated_at
      // Mối quan hệ với bảng FeedbackProduct
-     public function feedbacks()
-     {
-         return $this->hasMany(FeedbackProduct::class); // Quan hệ 1-n với FeedbackProduct
-     }
+    
     
 }

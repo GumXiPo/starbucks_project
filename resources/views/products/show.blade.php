@@ -309,7 +309,7 @@
         }
 
         .price h1{
-            font-size: 2.1rem;
+            /* font-size: 2.1rem; */
             font-weight: 600;
             line-height: 1;
         }
@@ -375,6 +375,117 @@
             object-fit: contain;
             /* padding-bottom: 15px; */
             display: block;
+        }
+        /* From Uiverse.io by vinodjangid07 */ 
+        .cartBtn {
+        width: 155px;
+        height: 50px;
+        border: none;
+        border-radius: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: white;
+        font-weight: 500;
+        position: relative;
+        background-color: rgb(29, 29, 29);
+        box-shadow: 0 20px 30px -7px rgba(27, 27, 27, 0.219);
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        overflow: hidden;
+        }
+
+        .cart {
+        z-index: 2;
+        }
+
+        .cartBtn:active {
+        transform: scale(0.96);
+        }
+
+        .product {
+        position: absolute;
+        width: 12px;
+        border-radius: 3px;
+        content: "";
+        left: 23px;
+        bottom: 23px;
+        opacity: 0;
+        z-index: 1;
+        fill: rgb(211, 211, 211);
+        }
+
+        .cartBtn:hover .product {
+        animation: slide-in-top 1.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+        @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+        .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: fit-content;
+        margin: 0 auto;
+        background: #eaeaea;
+        border-radius: 10px;
+        padding: 1rem 0.4rem;
+        }
+
+        .quantity-btn {
+        background: transparent;
+        border: none;
+        outline: none;
+        margin: 0;
+        padding: 0px 8px;
+        cursor: pointer;
+        }
+        .quantity-btn svg {
+        width: 15px;
+        height: 15px;
+        }
+        .quantity-input {
+        outline: none;
+        user-select: none;
+        text-align: center;
+        width: 47px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        }
+        .quantity-input::-webkit-inner-spin-button,
+        .quantity-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        @keyframes slide-in-top {
+        0% {
+            transform: translateY(-30px);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(0) rotate(-90deg);
+            opacity: 1;
+        }
+        }
+
+        .cartBtn:hover .cart {
+        animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        @keyframes slide-in-left {
+        0% {
+            transform: translateX(-10px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
         }
         .gradient[color="#4f8b69"] {
             background-image: linear-gradient(45deg, #4f8b69, #74b28d);
@@ -512,7 +623,6 @@
 
 <body>
 @include('layouts.header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="container">
         <div class="card">
@@ -533,7 +643,7 @@
                 </div>
                 <div class="description">
                     <h3 class="title">Product Info</h3>
-                    <p class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    <p class="text">{{ $product->description }}</p>
                 </div>
                 <div class="size-container">
                     <h3 class="title">Size</h3>
@@ -555,11 +665,24 @@
                 </div>
                 <div class="quantity-container">
                     <h3 class="title">Quantity</h3>
-                    <input type="number" id="quantity" value="1" min="1">
+                    <div class="quantity-control" data-quantity="">
+                        <button class="quantity-btn" data-quantity-minus=""><svg viewBox="0 0 409.6 409.6">
+                            <g>
+                                <path d="M392.533,187.733H17.067C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h375.467 c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"/>
+                            </g>
+                        </svg></button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" step="1" min="1" name="quantity">
+                        <button class="quantity-btn" data-quantity-plus=""><svg viewBox="0 0 426.66667 426.66667">
+                            <path d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0"/>
+                        </svg></button>
+                    </div>
                 </div>
                 <div class="buy-price">
-                    <button type="button" id="add-to-cart-btn">
-                        <span>Add to Cart</span>
+
+                    <button class="cartBtn" type="button" id="add-to-cart-btn">
+                        <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path></svg>
+                        ADD TO CART
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512" class="product"><path d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z"></path></svg>
                     </button>
                     <div class="price">
                         <h1>{{ number_format($product->price, 0, '.', ',') }} VND</h1>
@@ -568,8 +691,9 @@
             </div>
         </div>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+       document.addEventListener('DOMContentLoaded', function () {
             let selectedSize = null;
             let selectedSugar = '50'; // Default sugar value
 
@@ -591,6 +715,22 @@
                 });
             });
 
+            // Quantity control logic
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+
+            document.querySelector('[data-quantity-minus]').addEventListener('click', function () {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityInput.value = quantity;
+                }
+            });
+
+            document.querySelector('[data-quantity-plus]').addEventListener('click', function () {
+                quantity++;
+                quantityInput.value = quantity;
+            });
+
             // Add to cart event
             document.getElementById('add-to-cart-btn').addEventListener('click', function () {
                 if (!selectedSize) {
@@ -598,7 +738,7 @@
                     return;
                 }
 
-                const quantity = document.getElementById('quantity').value || 1;
+                const quantity = quantityInput.value || 1;
 
                 addToCart(selectedSize, selectedSugar, quantity);
             });
@@ -623,6 +763,7 @@
                 });
             }
         });
+
     </script>
 </body>
 
