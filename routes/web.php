@@ -51,5 +51,5 @@ Route::middleware('auth')->group(function() {
   Route::get('/api/cart', [CartController::class, 'getCartItems']);
   // Thêm sản phẩm vào giỏ hàng
   Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
-  Route::get('/cart/show', [CartController::class, 'showCart'])->name('cart.show');
+  Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 });

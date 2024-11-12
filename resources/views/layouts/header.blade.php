@@ -55,11 +55,11 @@
 
     <!-- Pop-up thông báo giỏ hàng -->
     <div id="cart-notification" class="cart-notification">
-        <h3>Giỏ Hàng</h3>
+        <h3>Your cart</h3>
         <div id="cart-items">
             <!-- Các sản phẩm trong giỏ sẽ hiển thị ở đây -->
         </div>
-        <button id="view-cart" onclick="window.location.href='/cart'">Xem Giỏ Hàng</button>
+        <button id="view-cart" onclick="window.location.href='{{ route('cart.show') }}'">Show cart</button>
     </div>
 
     <!-- CSS cho Pop-up thông báo -->
@@ -81,7 +81,7 @@
             border: 1px solid #ccc;
             padding: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 250px;
+            width: 25%;
             z-index: 9999;
         }
 
@@ -104,7 +104,12 @@
         .cart-notification button:hover {
             background-color: #45a049;
         }
-        
+        .cart-item{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+        }
     </style>
 </header>
 
@@ -114,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const cartIcon = document.getElementById('cart-icon');
     const cartNotification = document.getElementById('cart-notification');
     const cartItemsContainer = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartItemCount = document.getElementById('cart-item-count');
 
     // Khi nhấn vào biểu tượng giỏ hàng, hiển thị pop-up thông báo giỏ hàng
     cartIcon.addEventListener('click', function () {
@@ -124,6 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 cartItemsContainer.innerHTML = ''; // Xóa các sản phẩm cũ
+
+                let totalQuantity = 0;
 
                 // Thêm các sản phẩm vào pop-up
                 if (data.cartItems && Object.keys(data.cartItems).length > 0) {
@@ -137,10 +146,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${item.price} VND
                         `;
                         cartItemsContainer.appendChild(cartItem);
+                        totalQuantity += item.quantity;
                     }
                 } else {
                     cartItemsContainer.innerHTML = '<p>Giỏ hàng của bạn trống.</p>';
                 }
+
+                // Cập nhật số lượng sản phẩm trong giỏ hàng
+                cartCount.textContent = totalQuantity;
+                cartItemCount.textContent = totalQuantity;
             })
             .catch(error => {
                 console.error('Error fetching cart data:', error);
