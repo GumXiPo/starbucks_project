@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
@@ -49,11 +50,10 @@ Route::middleware('auth')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-  // Lấy giỏ hàng
-  Route::get('/api/cart', [CartController::class, 'getCartItems']);
-  // Thêm sản phẩm vào giỏ hàng
-  Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
+  // Các route liên quan đến giỏ hàng
   Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+  Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
+  Route::get('/api/cart', [CartController::class, 'getCartItems']);
 });
 
 // Feedback
@@ -65,6 +65,13 @@ Route::middleware('auth')->group(function() {
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
+// Route checkout
+Route::middleware('auth')->group(function () {
+  Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+  Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+  Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
+});
 
+// Route cho review sản phẩm
 Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 

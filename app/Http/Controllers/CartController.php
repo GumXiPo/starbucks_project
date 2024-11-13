@@ -25,7 +25,7 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         // Kiểm tra xem sản phẩm đã có trong giỏ chưa
-        if(isset($cart[$product_id])) {
+        if (isset($cart[$product_id])) {
             // Nếu sản phẩm đã có, tăng số lượng
             $cart[$product_id]['quantity'] += $quantity;
         } else {
@@ -38,7 +38,6 @@ class CartController extends Controller
                 'sugar' => $sugar,
                 'quantity' => $quantity,
             ];
-            
         }
 
         // Cập nhật giỏ hàng vào session
@@ -49,10 +48,10 @@ class CartController extends Controller
 
     public function showCart()
     {
-        // Lấy giỏ hàng từ session, nếu không có thì mặc định là mảng rỗng
+        // Lấy giỏ hàng từ session
         $cart = session()->get('cart', []);
 
-        // Truyền giỏ hàng vào view 'cart.show'
+        // Trả về view và truyền giỏ hàng vào
         return view('cart.show', compact('cart'));
     }
     public function getCartItems()
@@ -64,4 +63,21 @@ class CartController extends Controller
             'cartItems' => $cart
         ]);
     }
+    // app/Http/Controllers/CartController.php
+
+public function index()
+{
+    // Lấy giỏ hàng từ session
+    $cart = session('cart', []);
+
+    // Tính toán tổng giá trị giỏ hàng
+    $total = 0;
+    foreach ($cart as $item) {
+        $total += $item['price'] * $item['quantity'];  // Tính tổng giá trị giỏ hàng
+    }
+
+    // Trả về view với giỏ hàng và tổng giá trị
+    return view('cart.index', compact('cart', 'total'));
+}
+
 }

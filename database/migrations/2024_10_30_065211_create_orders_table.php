@@ -6,30 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOrdersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id('order_id');                      // Mã đơn hàng, tự động tăng
-            $table->unsignedBigInteger('customer_id');   // Khóa ngoại tới bảng customers
-            $table->dateTime('order_date');              // Ngày đặt hàng
-            $table->decimal('total_amount', 10, 2);      // Tổng tiền đơn hàng
-            $table->string('status', 50);                // Trạng thái đơn hàng
-            $table->foreign('customer_id')->references('customer_id')->on('customers'); // Khóa ngoại
+            $table->engine = 'InnoDB';
+            $table->id();  // Tạo cột id tự động tăng
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Liên kết với bảng 'users' và xóa khi người dùng bị xóa
+            $table->string('name',200 ); // Tên của người đặt hàng
+            $table->string('email',255); // Email của người đặt hàng
+            $table->text('note')->nullable(); // Ghi chú về đơn hàng, có thể để trống
+            $table->decimal('total_amount', 10, 2); // Tổng tiền của đơn hàng, độ dài 10, độ chính xác 2
+            $table->timestamp('order_date')->useCurrent(); // Ngày giờ tạo đơn hàng
+            $table->string('status', 50)->default('pending'); // Trạng thái đơn hàng, mặc định là 'pending'
+            $table->timestamps(); // Tạo cột created_at và updated_at
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('orders'); // Xóa bảng orders khi rollback migration
     }
 }
+
+

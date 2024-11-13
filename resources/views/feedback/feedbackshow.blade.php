@@ -3,34 +3,35 @@
 @section('content')
 <div class="container">
     <style>
-       .star-rating {
-    display: flex;
-    gap: 5px;
-    direction: rtl; /* Đảo ngược thứ tự của các sao */
-    margin-right: 67%;
-}
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            direction: rtl;
+            /* Đảo ngược thứ tự của các sao */
+            margin-right: 67%;
+        }
 
-.star-rating input {
-    display: none;
-}
+        .star-rating input {
+            display: none;
+        }
 
-.star-rating label {
-    font-size: 1.5em;
-    color: #ddd;
-    cursor: pointer;
-}
+        .star-rating label {
+            font-size: 1.5em;
+            color: #ddd;
+            cursor: pointer;
+        }
 
-.star-rating input:checked ~ label,
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-    color: #f39c12; /* Màu vàng khi hover hoặc được chọn */
-}
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #f39c12;
+            /* Màu vàng khi hover hoặc được chọn */
+        }
 
-.star-rating label i {
-    font-size: 1.5em; /* Điều chỉnh kích thước sao */
-}
-
-
+        .star-rating label i {
+            font-size: 1.5em;
+            /* Điều chỉnh kích thước sao */
+        }
     </style>
 
     <h1>Gửi Phản Hồi</h1>
