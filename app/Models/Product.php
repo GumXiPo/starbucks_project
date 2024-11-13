@@ -42,5 +42,9 @@ class Product extends Model
     public $timestamps = false; // Nếu bảng không có trường created_at và updated_at
      // Mối quan hệ với bảng FeedbackProduct
     
-    
+     public function reviews()
+     {
+         return $this->hasMany(Review::class, 'product_id');
+     }
+     
 }

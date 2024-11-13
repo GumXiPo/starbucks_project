@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function() {
   // Gửi phản hồi mới
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
+<<<<<<< HEAD
 
 //Route checkout
 Route::middleware('auth')->group(function () {
@@ -70,3 +71,9 @@ Route::middleware('auth')->group(function () {
   Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
   Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
 });
+=======
+use App\Http\Controllers\ReviewController;
+
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+>>>>>>> 31632b209266b4ece5441198bd02024aa35d2748

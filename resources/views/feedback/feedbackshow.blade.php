@@ -4,32 +4,37 @@
 <div class="container">
     <style>
         .star-rating {
-    display: flex;
-    gap: 5px;
-}
-.star-rating input {
-    display: none;
-}
-.star-rating label {
-    font-size: 1.5em;
-    color: #ddd;
-    cursor: pointer;
-}
-.star-rating input:checked ~ label,
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-    color: #f39c12;
-}
-.form-group {
-    margin-bottom: 20px;
-}
-.btn-primary {
-    transition: background-color 0.3s;
-}
-.btn-primary:hover {
-    background-color: #0056b3;
-}
+            display: flex;
+            gap: 5px;
+        }
 
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 1.5em;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #f39c12;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
     </style>
 
     <h1>Gửi Phản Hồi</h1>
@@ -105,48 +110,43 @@
 @endsection
 
 <script>
-   
-   document.querySelectorAll('.star-rating label').forEach(label => {
-    label.addEventListener('mouseover', function() {
-        let ratingValue = this.getAttribute('for').replace('star', '');
-        for (let i = 1; i <= 5; i++) {
-            let star = document.querySelector(`#star${i}`).nextElementSibling;
-            if (i <= ratingValue) {
-                star.classList.add('text-warning');
-            } else {
-                star.classList.remove('text-warning');
+    document.querySelectorAll('.star-rating label').forEach(label => {
+        label.addEventListener('mouseover', function() {
+            let ratingValue = this.getAttribute('for').replace('star', '');
+            for (let i = 1; i <= 5; i++) {
+                let star = document.querySelector(`#star${i}`).nextElementSibling;
+                if (i <= ratingValue) {
+                    star.classList.add('text-warning');
+                } else {
+                    star.classList.remove('text-warning');
+                }
+            }
+        });
+
+        label.addEventListener('mouseout', function() {
+            let ratingValue = document.querySelector('input[name="rating"]:checked');
+            let selectedRating = ratingValue ? ratingValue.value : 0;
+            for (let i = 1; i <= 5; i++) {
+                let star = document.querySelector(`#star${i}`).nextElementSibling;
+                if (i <= selectedRating) {
+                    star.classList.add('text-warning');
+                } else {
+                    star.classList.remove('text-warning');
+                }
+            }
+        });
+    });
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let rating = document.querySelector('input[name="rating"]:checked');
+        let message = document.querySelector('textarea[name="message"]').value;
+
+        if (!rating || message.trim() === "") {
+            event.preventDefault(); // Ngừng gửi form nếu thiếu thông tin
+            alert('Vui lòng chọn đánh giá sao và nhập nội dung phản hồi.');
+        } else {
+            if (!confirm('Bạn chắc chắn muốn gửi phản hồi này không?')) {
+                event.preventDefault(); // Ngừng gửi form nếu người dùng không xác nhận
             }
         }
     });
-
-    label.addEventListener('mouseout', function() {
-        let ratingValue = document.querySelector('input[name="rating"]:checked');
-        let selectedRating = ratingValue ? ratingValue.value : 0;
-        for (let i = 1; i <= 5; i++) {
-            let star = document.querySelector(`#star${i}`).nextElementSibling;
-            if (i <= selectedRating) {
-                star.classList.add('text-warning');
-            } else {
-                star.classList.remove('text-warning');
-            }
-        }
-    });
-});
-document.querySelector('form').addEventListener('submit', function(event) {
-    let rating = document.querySelector('input[name="rating"]:checked');
-    let message = document.querySelector('textarea[name="message"]').value;
-
-    if (!rating || message.trim() === "") {
-        event.preventDefault(); // Ngừng gửi form nếu thiếu thông tin
-        alert('Vui lòng chọn đánh giá sao và nhập nội dung phản hồi.');
-    } else {
-        if (!confirm('Bạn chắc chắn muốn gửi phản hồi này không?')) {
-            event.preventDefault(); // Ngừng gửi form nếu người dùng không xác nhận
-        }
-    }
-});
-
-
 </script>
-
-
