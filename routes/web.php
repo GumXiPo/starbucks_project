@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
 
 // Route cho trang chủ
 Route::get('/', function () {
@@ -63,7 +64,7 @@ Route::middleware('auth')->group(function() {
   // Gửi phản hồi mới
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
-use App\Http\Controllers\ReviewController;
+
 
 Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
