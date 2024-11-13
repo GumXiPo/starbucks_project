@@ -61,7 +61,7 @@
         </div>
         <button id="view-cart" onclick="window.location.href='{{ route('cart.show') }}'">Show cart</button>
     </div>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSS cho Pop-up thông báo -->
     <style>
         #cart-icon {
@@ -81,7 +81,7 @@
             border: 1px solid #ccc;
             padding: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 25%;
+            width: 400px;
             z-index: 9999;
         }
 
@@ -91,25 +91,58 @@
             text-align: center;
         }
 
-        .cart-notification button {
+        .cart-notification .remove-item {
+            width: 10%;
+            color: #A6AEBF;
+        }
+
+        .cart-notification .remove-item:hover {
+            color: #45a049;
+        }
+        .cart-notification #view-cart {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #45a049;
             border: none;
             cursor: pointer;
             margin-top: 10px;
+            transition: ;
         }
 
-        .cart-notification button:hover {
-            background-color: #45a049;
+        .cart-notification #view-cart:hover {
+            background-color: #A6AEBF;
         }
-        .cart-item{
+        .cart-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin: 20px;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-top: 1px solid #ccc;
         }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .total-amount {
+            padding: 10px 0;
+            border-top: 1px solid #ccc;
+            text-align: right;
+            font-weight: bold;
+        }
+
     </style>
 </header>
 
@@ -121,35 +154,55 @@ document.addEventListener('DOMContentLoaded', function () {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartCount = document.getElementById('cart-count');
     const cartItemCount = document.getElementById('cart-item-count');
+    let totalAmountContainer;
 
-    // Khi nhấn vào biểu tượng giỏ hàng, hiển thị pop-up thông báo giỏ hàng
+    // Hiển thị pop-up giỏ hàng khi nhấn vào biểu tượng giỏ hàng
     cartIcon.addEventListener('click', function () {
-        cartNotification.style.display = 'block'; // Hiển thị pop-up
+        cartNotification.style.display = 'block';
 
-        // Lấy dữ liệu giỏ hàng từ API và hiển thị
+        // Gọi API lấy dữ liệu giỏ hàng và cập nhật giao diện
         fetch('/api/cart')
             .then(response => response.json())
             .then(data => {
                 cartItemsContainer.innerHTML = ''; // Xóa các sản phẩm cũ
 
                 let totalQuantity = 0;
+                let totalAmount = 0;
 
-                // Thêm các sản phẩm vào pop-up
+                // Thêm sản phẩm vào pop-up
                 if (data.cartItems && Object.keys(data.cartItems).length > 0) {
                     for (let productId in data.cartItems) {
                         const item = data.cartItems[productId];
                         const cartItem = document.createElement('div');
                         cartItem.classList.add('cart-item');
+                        cartItem.setAttribute('id', `cart-item-${productId}`);
                         cartItem.innerHTML = `
-                            <strong>${item.name}</strong> 
-                            x${item.quantity} - 
-                            ${item.price} VND
+                            <img src="{{ asset('images/product/') }}/${item.image ?? 'default.png'}" 
+                                alt="${item.name}" style="width: 50px; margin-right: 10px;">
+                            <div>
+                                <strong>${item.name}</strong><br>
+                                x${item.quantity} - 
+                                ${item.price} VND
+                            </div>
+                            <button class="remove-item" onclick="removeFromCart(${productId})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         `;
                         cartItemsContainer.appendChild(cartItem);
-                        totalQuantity += item.quantity;
+                        totalQuantity += Number(item.quantity);
+                        totalAmount += item.price * item.quantity;
                     }
+
+                    // Thêm tổng số lượng và tổng tiền vào cuối pop-up
+                    totalAmountContainer = document.createElement('div');
+                    totalAmountContainer.classList.add('total-amount');
+                    totalAmountContainer.innerHTML = `
+                        <p><strong>Total Quantity:</strong> ${totalQuantity}</p>
+                        <p><strong>Total Amount:</strong> ${totalAmount} VND</p>
+                    `;
+                    cartItemsContainer.appendChild(totalAmountContainer);
                 } else {
-                    cartItemsContainer.innerHTML = '<p>Giỏ hàng của bạn trống.</p>';
+                    cartItemsContainer.innerHTML = '<p>Your shopping cart is empty.</p>';
                 }
 
                 // Cập nhật số lượng sản phẩm trong giỏ hàng
@@ -161,11 +214,62 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    // Đóng pop-up nếu người dùng nhấp ra ngoài
+    // Đóng pop-up nếu người dùng nhấp ra ngoài khu vực pop-up và biểu tượng giỏ hàng
     window.addEventListener('click', function (event) {
         if (!cartNotification.contains(event.target) && event.target !== cartIcon) {
-            cartNotification.style.display = 'none'; // Ẩn pop-up
+            cartNotification.style.display = 'none';
         }
     });
 });
+
+// Hàm xóa sản phẩm khỏi giỏ hàng
+function removeFromCart(productId) {
+    // Xóa sản phẩm khỏi giao diện ngay lập tức
+    const cartItem = document.querySelector(`#cart-item-${productId}`);
+    if (cartItem) cartItem.remove();
+
+    // Gửi yêu cầu xóa sản phẩm lên server
+    fetch(`/cart/remove/${productId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Error:', data.message);
+        }
+
+        // Cập nhật lại tổng số lượng và tổng tiền
+        updateCartSummary();
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+    });
+}
+
+function updateCartSummary() {
+    // Gọi API để lấy tổng số lượng và tổng tiền mới
+    fetch('/api/cart')
+        .then(response => response.json())
+        .then(data => {
+            let totalQuantity = 0;
+            let totalAmount = 0;
+
+            for (let productId in data.cartItems) {
+                const item = data.cartItems[productId];
+                totalQuantity += item.quantity;
+                totalAmount += item.price * item.quantity;
+            }
+
+            document.getElementById('cart-count').textContent = totalQuantity;
+            document.getElementById('cart-item-count').textContent = totalQuantity;
+            if (totalAmountContainer) {
+                totalAmountContainer.innerHTML = `<p><strong>Total Amount:</strong> ${totalAmount} VND</p>`;
+            }
+        });
+}
+
 </script>

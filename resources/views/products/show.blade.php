@@ -35,7 +35,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 860px;
+            width: 1000px;
         }
 
         .shoeBackground{
@@ -193,7 +193,7 @@
             text-transform: capitalize;
         }
 
-        .shoeName, .description, .color-container, .size-container{
+        .shoeName, .description, .color-container, .size-container, .quantity-container, .sugar-container{
             border-bottom: 1px solid #dadada;
         }
 
@@ -264,7 +264,7 @@
             transform: scale(1.1);
         }
 
-        .size-container{
+        .size-container, .quantity-container, .sugar-container{
             padding: 10px 0;
             margin-bottom: 10px;
         }
@@ -423,12 +423,11 @@
         .quantity-control {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         width: fit-content;
-        margin: 0 auto;
         background: #eaeaea;
         border-radius: 10px;
         padding: 1rem 0.4rem;
+        margin: 10px 0;
         }
 
         .quantity-btn {
@@ -693,76 +692,94 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-       document.addEventListener('DOMContentLoaded', function () {
-            let selectedSize = null;
-            let selectedSugar = '50'; // Default sugar value
+      document.addEventListener('DOMContentLoaded', function () {
+    let selectedSize = null;
+    let selectedSugar = '50'; // Giá trị đường mặc định
+    const originalPrice = {{ $product->price }}; // Lấy giá gốc từ server
+    let currentPrice = originalPrice;
 
-            // Select size
-            document.querySelectorAll('.size-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedSize = option.dataset.size;
-                });
-            });
+    // Hệ số điều chỉnh giá cho từng size
+    const sizeAdjustments = {
+        'S': 1,     // Giá gốc cho size S
+        'M': 1.2,   // Giá tăng 20% cho size M
+        'L': 1.5,   // Giá tăng 50% cho size L
+        'XL': 1.7   // Giá tăng 70% cho size XL
+    };
 
-            // Select sugar level
-            document.querySelectorAll('.sugar-option').forEach(option => {
-                option.addEventListener('click', function () {
-                    document.querySelectorAll('.sugar-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedSugar = option.dataset.sugar;
-                });
-            });
+    // Chọn size
+    document.querySelectorAll('.size-option').forEach(option => {
+        option.addEventListener('click', function () {
+            document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedSize = option.dataset.size;
 
-            // Quantity control logic
-            const quantityInput = document.getElementById('quantity');
-            let quantity = parseInt(quantityInput.value);
-
-            document.querySelector('[data-quantity-minus]').addEventListener('click', function () {
-                if (quantity > 1) {
-                    quantity--;
-                    quantityInput.value = quantity;
-                }
-            });
-
-            document.querySelector('[data-quantity-plus]').addEventListener('click', function () {
-                quantity++;
-                quantityInput.value = quantity;
-            });
-
-            // Add to cart event
-            document.getElementById('add-to-cart-btn').addEventListener('click', function () {
-                if (!selectedSize) {
-                    alert('Please select a size');
-                    return;
-                }
-
-                const quantity = quantityInput.value || 1;
-
-                addToCart(selectedSize, selectedSugar, quantity);
-            });
-
-            function addToCart(size, sugar, quantity) {
-                const productId = {{ $product->product_id }};
-
-                fetch(`{{ route('cart.add', ':productId') }}`.replace(':productId', productId), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({ size, sugar, quantity })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Product added to cart');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
+            // Tính giá dựa trên size đã chọn
+            currentPrice = originalPrice * (sizeAdjustments[selectedSize] || 1);
+            updatePriceDisplay();
         });
+    });
+
+    // Chọn mức đường
+    document.querySelectorAll('.sugar-option').forEach(option => {
+        option.addEventListener('click', function () {
+            document.querySelectorAll('.sugar-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedSugar = option.dataset.sugar;
+        });
+    });
+
+    // Điều khiển số lượng
+    const quantityInput = document.getElementById('quantity');
+    let quantity = parseInt(quantityInput.value);
+
+    document.querySelector('[data-quantity-minus]').addEventListener('click', function () {
+        if (quantity > 1) {
+            quantity--;
+            quantityInput.value = quantity;
+        }
+    });
+
+    document.querySelector('[data-quantity-plus]').addEventListener('click', function () {
+        quantity++;
+        quantityInput.value = quantity;
+    });
+
+    // Hàm cập nhật hiển thị giá
+    function updatePriceDisplay() {
+        document.querySelector('.price h1').textContent = `${currentPrice.toLocaleString()} VND`;
+    }
+
+    // Sự kiện thêm vào giỏ hàng
+    document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+        if (!selectedSize) {
+            alert('Vui lòng chọn size');
+            return;
+        }
+
+        const quantity = quantityInput.value || 1;
+        addToCart(selectedSize, selectedSugar, quantity, currentPrice);
+    });
+
+    function addToCart(size, sugar, quantity, price) {
+        const productId = {{ $product->product_id }};
+
+        fetch(`{{ route('cart.add', ':productId') }}`.replace(':productId', productId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ size, sugar, quantity, price })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Sản phẩm đã được thêm vào giỏ hàng');
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+        });
+    }
+});
 
     </script>
 </body>

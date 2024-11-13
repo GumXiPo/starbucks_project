@@ -52,4 +52,6 @@ Route::middleware('auth')->group(function() {
   // Thêm sản phẩm vào giỏ hàng
   Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
   Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+  Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+  
 });

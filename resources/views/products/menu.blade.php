@@ -42,8 +42,7 @@
         body {
         font-family: var(--body-font);
         font-size: var(--normal-font-size);
-        background-color: var(--white-color);
-        color: var(--gray-color);   
+        background-color: var(--white-color);  
         }
 
         a {
@@ -103,8 +102,11 @@
             text-overflow: ellipsis; /* Thêm dấu "..." khi văn bản dài */
             max-width: 100%; /* Đảm bảo rằng phần tử không vượt quá chiều rộng của container */
             display: block; /* Chắc chắn rằng phần tử hiển thị như một khối */
+            color: var(--gray-color); 
         }
-
+        .card__price{
+            color: var(--gray-color); 
+        }
 
         .card__bg {
         position: absolute;
