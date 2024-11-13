@@ -60,7 +60,8 @@
         <div id="cart-items">
             <!-- Các sản phẩm trong giỏ sẽ hiển thị ở đây -->
         </div>
-        <button id="view-cart" onclick="window.location.href='{{ route('cart.show') }}'">Show cart</button>
+        <button id="view-cart" onclick="window.location.href='/cart'">Show cart</button>
+
     </div>
 
     <style>

@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
+
+class OrderController extends Controller
+{
+    public function checkout()
+    {
+        // Lấy sản phẩm trong giỏ hàng (Giả sử đã có giỏ hàng trong session)
+        $cart = session('cart', []);
+
+        // Kiểm tra nếu giỏ hàng không rỗng
+        if (empty($cart)) {
+            // Nếu giỏ hàng trống, có thể đưa ra thông báo hoặc xử lý khác
+            return redirect()->route('cart.show')->with('error', 'Giỏ hàng của bạn trống!');
+        }
+
+        // Tính tổng số tiền
+        $totalAmount = $this->calculateTotalAmount();  // Tính tổng số tiền
+
+        return view('checkout', compact('cart', 'totalAmount'));  // Truyền totalAmount sang view
+    }
+    public function placeOrder(Request $request)
+    {
+        // Validate dữ liệu đầu vào
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:15',
+        ]);
+
+        // Kiểm tra giỏ hàng
+        $cart = session('cart', []);
+        if (!is_array($cart) || empty($cart)) {
+            return redirect()->route('cart.show')->with('error', 'Giỏ hàng của bạn đang trống.');
+        }
+
+        // Tính tổng số tiền trong giỏ hàng
+        $totalAmount = $this->calculateTotalAmount($cart);
+
+        // Tạo đơn hàng
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'total_amount' => $totalAmount,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            'name' => $request->name,
+            'email' => $request->email,  // Lưu email vào cơ sở dữ liệu
+            'note' => $request->note,    // Lưu ghi chú vào cơ sở dữ liệu
+            'products' => json_encode($cart),  // Lưu giỏ hàng dưới dạng JSON
+        ]);
+
+        // Xóa giỏ hàng sau khi đặt hàng
+        session()->forget('cart');
+
+        // Gửi email xác nhận đơn hàng
+        Mail::to(auth()->user()->email)->send(new OrderConfirmationMail($order));
+
+        // Chuyển hướng đến trang thành công
+        return redirect()->route('order.success')->with('success', 'Đặt hàng thành công');
+    }
+
+
+
+
+
+    public function orderSuccess()
+    {
+        return view('order.success');
+    }
+
+    // Giữ phương thức này không tĩnh
+    private function calculateTotalAmount()
+    {
+        $cart = session('cart', []);  // Lấy giỏ hàng từ session, mặc định là mảng rỗng nếu không có
+        $total = 0;
+
+        // Kiểm tra nếu giỏ hàng không rỗng
+        if (!empty($cart) && is_array($cart)) {
+            foreach ($cart as $productId => $details) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $total += $product->price * $details['quantity'];  // Tính tổng số tiền
+                }
+            }
+        }
+
+        return $total;
+    }
+}

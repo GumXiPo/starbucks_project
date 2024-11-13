@@ -14,6 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('product_id');                   // Mã sản phẩm, tự động tăng
             $table->string('name', 100);                // Tên sản phẩm
             $table->string('image', 250);               //hình
