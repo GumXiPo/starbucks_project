@@ -63,3 +63,7 @@ Route::middleware('auth')->group(function() {
   // Gửi phản hồi mới
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
+use App\Http\Controllers\ReviewController;
+
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+

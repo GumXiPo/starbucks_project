@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root{
             --primary: #4f8b69;
@@ -618,6 +619,41 @@
                 padding: 20px;
             }
         }
+        
+        .star-rating {
+            display: flex;
+            color: #ffc107;
+            gap: 5px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 1.5em;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #f39c12;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    
     </style>
 </head>
 
@@ -691,6 +727,100 @@
             </div>
         </div>
     </div>
+    <div class="container">
+    <h1>{{ $product->name }}</h1>
+    <p>{{ $product->description }}</p>
+    <p>Giá: {{ number_format($product->price, 0, ',', '.') }} VND</p>
+
+    <hr>
+
+    <h3>Phản hồi của khách hàng</h3>
+
+    <!-- Hiển thị thông báo nếu phản hồi thành công -->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Form gửi phản hồi -->
+    @auth
+    <div class="card mb-4">
+        <div class="card-header">
+            Gửi phản hồi
+        </div>
+        <div class="card-body">
+            <form action="{{ route('reviews.store', $product->product_id) }}" method="POST">
+                @csrf
+                <div class="form-group mb-3">
+                    <!-- Star Rating -->
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" />
+                        <label for="star5" title="5 sao"><i class="fa-solid fa-star text-warning"></i></label>
+
+                        <input type="radio" id="star4" name="rating" value="4" />
+                        <label for="star4" title="4 sao"><i class="fa-solid fa-star text-warning"></i></label>
+
+                        <input type="radio" id="star3" name="rating" value="3" />
+                        <label for="star3" title="3 sao"><i class="fa-solid fa-star text-warning"></i></label>
+
+                        <input type="radio" id="star2" name="rating" value="2" />
+                        <label for="star2" title="2 sao"><i class="fa-solid fa-star text-warning"></i></label>
+
+                        <input type="radio" id="star1" name="rating" value="1" />
+                        <label for="star1" title="1 sao"><i class="fa-solid fa-star text-warning"></i></label>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="comment">Phản hồi</label>
+                    <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+            </form>
+        </div>
+    </div>
+    @else
+    <p><a href="{{ route('login') }}">Đăng nhập</a> để gửi phản hồi.</p>
+    @endauth
+
+    <hr>
+
+    <!-- Hiển thị các phản hồi -->
+    @if($product->reviews->count() > 0)
+        <div class="row">
+            @foreach($product->reviews as $review)
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $review->user->username }}</h5>
+
+                        <!-- Hiển thị sao đánh giá -->
+                        <div class="star-rating">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if($i <= $review->rating)
+                                    <i class="fa-solid fa-star text-warning"></i> <!-- Sao đầy màu vàng -->
+                                @else
+                                    <i class="fa-regular fa-star text-warning"></i> <!-- Sao rỗng màu vàng -->
+                                @endif
+                            @endfor
+                        </div>
+
+                        <p class="card-text">{{ $review->comment }}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ $review->created_at->format('d/m/Y') }}
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    @else
+        <p>Chưa có phản hồi nào cho sản phẩm này.</p>
+    @endif
+</div>
+
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
        document.addEventListener('DOMContentLoaded', function () {
