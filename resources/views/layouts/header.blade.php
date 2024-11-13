@@ -16,6 +16,9 @@
                 <li><a href="">Delivery</a></li>
                 <li><a href="">Contact</a></li>
                 <li><a href="">About</a></li>
+                <li>
+                    <a href="{{ route('feedback.feedbackshow') }}"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
+                </li>
             </ul>
         </div>
         <div class="nav-right">
@@ -27,9 +30,8 @@
                     <li>
                         <a href="{{ route('profile.show') }}"><i class="fa-solid fa-user"></i></a>
                     </li>
-                    <!-- Biểu tượng giỏ hàng -->
                     <li>
-                        <a href="javascript:void(0)" id="cart-icon">
+                        <a href="javascript:void(0)" class="cart-icon" aria-label="Giỏ hàng">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
                     </li>
@@ -53,24 +55,17 @@
         </div>
     </nav>
 
-    <!-- Pop-up thông báo giỏ hàng -->
-    <div id="cart-notification" class="cart-notification">
+    <div id="cart-notification" class="cart-notification" aria-hidden="true">
         <h3>Your cart</h3>
         <div id="cart-items">
             <!-- Các sản phẩm trong giỏ sẽ hiển thị ở đây -->
         </div>
-        <button id="view-cart" onclick="window.location.href='{{ route('cart.show') }}'">Show cart</button>
+        <button id="view-cart" onclick="window.location.href='/cart'">Show cart</button>
+
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSS cho Pop-up thông báo -->
     <style>
-        #cart-icon {
-            display: flex;         /* Đảm bảo biểu tượng giỏ hàng được bao bọc trong một vùng có thể nhấp chuột */
-            align-items: center;   /* Căn giữa biểu tượng */
-            justify-content: center; /* Căn giữa biểu tượng */
-            padding: 10px;         /* Tăng kích thước vùng nhấp chuột */
-            cursor: pointer;      /* Thêm con trỏ tay để người dùng biết có thể nhấp vào */
-        }
         /* Pop-up thông báo */
         .cart-notification {
             display: none;
@@ -146,10 +141,9 @@
     </style>
 </header>
 
-<!-- JavaScript cho Pop-up Giỏ Hàng -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const cartIcon = document.getElementById('cart-icon');
+    const cartIcon = document.querySelector('.cart-icon');
     const cartNotification = document.getElementById('cart-notification');
     const cartItemsContainer = document.getElementById('cart-items');
     const cartCount = document.getElementById('cart-count');
