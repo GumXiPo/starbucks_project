@@ -622,8 +622,10 @@
         
         .star-rating {
             display: flex;
-            color: #ffc107;
             gap: 5px;
+            direction: rtl;
+            /* Đảo ngược thứ tự của các sao */
+            margin-right: 67%;
         }
 
         .star-rating input {
@@ -640,18 +642,12 @@
         .star-rating label:hover,
         .star-rating label:hover~label {
             color: #f39c12;
+            /* Màu vàng khi hover hoặc được chọn */
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .btn-primary {
-            transition: background-color 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
+        .star-rating label i {
+            font-size: 1.5em;
+            /* Điều chỉnh kích thước sao */
         }
     
     </style>

@@ -12,8 +12,8 @@ class CreateOrdersTable extends Migration
             $table->engine = 'InnoDB';
             $table->id();  // Tạo cột id tự động tăng
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Liên kết với bảng 'users' và xóa khi người dùng bị xóa
-            $table->string('name'); // Tên của người đặt hàng
-            $table->string('email'); // Email của người đặt hàng
+            $table->string('name',200 ); // Tên của người đặt hàng
+            $table->string('email',255); // Email của người đặt hàng
             $table->text('note')->nullable(); // Ghi chú về đơn hàng, có thể để trống
             $table->decimal('total_amount', 10, 2); // Tổng tiền của đơn hàng, độ dài 10, độ chính xác 2
             $table->timestamp('order_date')->useCurrent(); // Ngày giờ tạo đơn hàng

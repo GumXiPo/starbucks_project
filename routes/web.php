@@ -69,10 +69,17 @@ Route::middleware('auth')->group(function() {
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
-//Route checkout
+// Route checkout
 Route::middleware('auth')->group(function () {
   Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
   Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
   Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
 });
+<<<<<<< HEAD
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+=======
+
+// Route cho review sản phẩm
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+>>>>>>> cd93d6ed617a431d31fddc50682c03835d1b4332
