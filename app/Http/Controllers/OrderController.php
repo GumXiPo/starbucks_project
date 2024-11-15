@@ -67,6 +67,14 @@ class OrderController extends Controller
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công');
     }
 
+    public function index()
+    {
+        // Lấy tất cả đơn hàng
+        $orders = Order::with('user')->get();  // Sử dụng Eloquent để lấy dữ liệu cùng với thông tin người dùng
+
+        return view('order.index', compact('orders'));
+
+    }
 
 
 

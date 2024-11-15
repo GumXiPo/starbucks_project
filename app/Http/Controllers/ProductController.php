@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -93,11 +94,44 @@ class ProductController extends Controller
         // Quay lại trang danh sách sản phẩm với thông báo thành công
         return redirect()->route('products.adminproduct')->with('success', 'Cập nhật sản phẩm thành công!');
     }
+    public function store(Request $request)
+    {
+        // Validate dữ liệu
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'category' => 'required|string|max:255',
+            'is_available' => 'required|boolean',
+            'stock_quantity' => 'required|integer',
+            'image' => 'nullable|image|max:1024', // Validate ảnh
+        ]);
 
+        // Xử lý hình ảnh
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
+        // Tạo sản phẩm mới
+        $product = Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'category' => $request->category,
+            'is_available' => $request->has('is_available') ? true : false,
+            'stock_quantity' => $request->stock_quantity,
+            'image' => isset($imagePath) ? $imagePath : null,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('products.adminproduct')->with('success', 'Sản phẩm đã được thêm!');
+    }
     // Hiển thị chi tiết sản phẩm
     public function show($id)
-{
-    $product = Product::findOrFail($id);
-    return view('products.show', compact('product'));
-}
+    {
+        $product = Product::findOrFail($id);
+        return view('products.show', compact('product'));
+    }
+    public function create()
+    {
+        return view('products.create'); // View form thêm sản phẩm
+    }
 }

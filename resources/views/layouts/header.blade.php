@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="/">Coffee</a></li>
                 <li><a href="{{ route('products.menu') }}">Menu</a></li>
-                <li><a href="">Delivery</a></li>
+                <li><a href="{{ route('order.index') }}">Delivery</a></li>
                 <li><a href="">Contact</a></li>
                 <li><a href="">About</a></li>
                 <li>

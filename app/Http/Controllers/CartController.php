@@ -102,4 +102,23 @@ class CartController extends Controller
         // Trả về view với giỏ hàng và tổng giá trị
         return view('cart.index', compact('cart', 'total'));
     }
+    public function updateQuantity(Request $request, $productId)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            $newQuantity = $cart[$productId]['quantity'] + $request->input('change', 0);
+
+            // Đảm bảo số lượng >= 1
+            if ($newQuantity > 0) {
+                $cart[$productId]['quantity'] = $newQuantity;
+                session()->put('cart', $cart);
+                return response()->json(['success' => true, 'message' => 'Quantity updated.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Quantity cannot be less than 1.']);
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => 'Product not found in cart.']);
+    }
 }

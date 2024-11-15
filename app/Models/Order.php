@@ -12,7 +12,9 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'total_amount', 'address', 'phone_number', 'name', 'email', 'note', 'products'
     ];
-
+    protected $casts = [
+        'order_date' => 'datetime',
+    ];
     // Quan hệ với bảng users
     public function user()
     {

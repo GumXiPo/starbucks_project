@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
 
 // Route cho trang chủ
 Route::get('/', function () {
@@ -35,24 +36,28 @@ Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('pro
 Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/products/search', [ProductController::class, 'search'])->name('product.search');
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
 // Route cho profile
 Route::middleware('auth')->group(function() {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    
-    // Nếu là admin, có thể truy cập trang chỉnh sửa profile admin
-    Route::get('/profile/admin', [ProfileController::class, 'adminProfile'])->name('profile.adminProfile');
-    Route::get('profile/editadminProfile/{id}', [ProfileController::class, 'editadminProfile'])->name('profile.admin.editadminProfile');
-    Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'updateadminProfile'])->name('profile.updateadminProfile');
+  Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+  Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+  
+  // Nếu là admin, có thể truy cập trang chỉnh sửa profile admin
+  Route::get('/profile/admin', [ProfileController::class, 'adminProfile'])->name('profile.adminProfile');
+  Route::get('profile/editadminProfile/{id}', [ProfileController::class, 'editadminProfile'])->name('profile.admin.editadminProfile');
+  Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'updateadminProfile'])->name('profile.updateadminProfile');
 });
+
 
 Route::middleware('auth')->group(function() {
   // Các route liên quan đến giỏ hàng
   Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
   Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
-  
+  Route::post('/cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
   Route::post('/cart/add/{product_id}', [CartController::class, 'addToCart'])->name('cart.add');
   Route::get('/api/cart', [CartController::class, 'getCartItems']);
 });
@@ -66,13 +71,13 @@ Route::middleware('auth')->group(function() {
   Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
-//Route checkout
+// Route checkout
 Route::middleware('auth')->group(function () {
   Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
   Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
   Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
 });
-use App\Http\Controllers\ReviewController;
+Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 
+// Route cho review sản phẩm
 Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-

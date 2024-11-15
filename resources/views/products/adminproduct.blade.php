@@ -4,13 +4,11 @@
 
 @section('contents')
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
+        <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm Sản Phẩm Mới</a>
     </div>
     <div class="card-body">
-        @if (auth()->check() && auth()->user()->level == 'Admin')
-            <a href="{{ route('products.add') }}" class="btn btn-primary mb-3">Thêm sản phẩm</a>
-        @endif
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -34,7 +32,7 @@
                         <td>{{ $row->product_id }}</td>
                         <td>
                             @if ($row->image)
-                                <img src="{{ asset('images/' . $row->image) }}" alt="{{ $row->name }}" width="50" height="50">
+                            <img src="{{ asset('images/product/' . $row->image) }}" alt="{{ $row->name }}" class="card__img" style="width: 100px; height: auto;">
                             @else
                                 <span>Không có hình ảnh</span>
                             @endif
