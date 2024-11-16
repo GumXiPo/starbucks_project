@@ -75,11 +75,15 @@ Route::middleware('auth')->group(function () {
   Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
   Route::get('/order/success', [OrderController::class, 'orderSuccess'])->name('order.success');
 });
-<<<<<<< HEAD
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
-=======
+Route::get('/orders', [OrderController::class, 'show'])->name('orders.index');
+Route::post('/orders/{orderId}/updateStatus', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::get('/orders/showmore/{orderId}', [OrderController::class, 'showmore'])
+    ->name('orders.showmore')
+    ->withoutMiddleware(['auth']); // Tạm thời bỏ middleware auth để kiểm tra
+
 
 // Route cho review sản phẩm
 Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
->>>>>>> cd93d6ed617a431d31fddc50682c03835d1b4332
+

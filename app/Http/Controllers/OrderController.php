@@ -67,13 +67,33 @@ class OrderController extends Controller
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công');
     }
 
+    public function showmore($orderId)
+{
+    // Lấy thông tin đơn hàng và kiểm tra lại products
+    $order = Order::with('user', 'products')->findOrFail($orderId);
+      // Giải mã JSON nếu cần thiết
+      $products = json_decode($order->products, true); // true để nhận kết quả là mảng
+    return view('orders.showmore', compact('order'));
+}
+
+
+
+
+
+    public function show()
+    {
+        
+        $orders = Order::all(); // Lấy tất cả đơn hàng
+
+        return view('orders.index', compact('orders')); // Trả về view kèm theo danh sách đơn hàng
+    }
+
     public function index()
     {
         // Lấy tất cả đơn hàng
         $orders = Order::with('user')->get();  // Sử dụng Eloquent để lấy dữ liệu cùng với thông tin người dùng
 
         return view('order.index', compact('orders'));
-
     }
 
 
@@ -83,7 +103,17 @@ class OrderController extends Controller
     {
         return view('order.success');
     }
+    // Cập nhật trạng thái đơn hàng
+    public function updateStatus(Request $request, $orderId)
+    {
+        $order = Order::findOrFail($orderId);
 
+        // Kiểm tra và cập nhật trạng thái
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái thành công!');
+    }
     // Giữ phương thức này không tĩnh
     private function calculateTotalAmount()
     {

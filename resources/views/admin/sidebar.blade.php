@@ -29,6 +29,11 @@
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Users</span></a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('orders.index') }}">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>checkout</span></a>
+    </li>
  
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
