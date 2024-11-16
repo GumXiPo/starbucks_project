@@ -67,49 +67,52 @@ class ProfileController extends Controller
     }
 
     public function updateadminProfile(Request $request)
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    // Chỉ cập nhật các trường có dữ liệu mới
-    if ($request->filled('username') && $request->username !== $user->username) {
-        // Kiểm tra tính duy nhất của username
-        if (User::where('username', $request->username)->exists()) {
-            return redirect()->back()->with('error', 'Tên đăng nhập đã tồn tại.');
+        // Chỉ cập nhật các trường có dữ liệu mới
+        if ($request->filled('username') && $request->username !== $user->username) {
+            // Kiểm tra tính duy nhất của username
+            if (User::where('username', $request->username)->exists()) {
+                return redirect()->back()->with('error', 'Tên đăng nhập đã tồn tại.');
+            }
+            $user->username = $request->username;
         }
-        $user->username = $request->username;
-    }
 
-    if ($request->filled('email') && $request->email !== $user->email) {
-        // Kiểm tra tính duy nhất của email
-        if (User::where('email', $request->email)->exists()) {
-            return redirect()->back()->with('error', 'Email đã tồn tại.');
+        if ($request->filled('email') && $request->email !== $user->email) {
+            // Kiểm tra tính duy nhất của email
+            if (User::where('email', $request->email)->exists()) {
+                return redirect()->back()->with('error', 'Email đã tồn tại.');
+            }
+            $user->email = $request->email;
         }
-        $user->email = $request->email;
+
+        if ($request->filled('full_name')) {
+            $user->full_name = $request->full_name;
+        }
+
+        if ($request->filled('phone_number')) {
+            $user->phone_number = $request->phone_number;
+        }
+
+        if ($request->filled('address')) {
+            $user->address = $request->address;
+        }
+
+        if ($request->has('is_active')) {
+            $user->is_active = $request->is_active;
+        }
+
+        // Lưu thông tin đã cập nhật
+        $user->save();
+
+        // Quay lại với thông báo thành công
+        return redirect()->route('profile.adminProfile')->with('success', 'Thông tin đã được cập nhật thành công!');
     }
 
-    if ($request->filled('full_name')) {
-        $user->full_name = $request->full_name;
+    public function showadmin()
+    {
+        $user = auth()->user(); // Lấy người dùng đã đăng nhập
+        return view('profile.showadmin', compact('user')); // Truyền dữ liệu vào view
     }
-
-    if ($request->filled('phone_number')) {
-        $user->phone_number = $request->phone_number;
-    }
-
-    if ($request->filled('address')) {
-        $user->address = $request->address;
-    }
-
-    if ($request->has('is_active')) {
-        $user->is_active = $request->is_active;
-    }
-
-    // Lưu thông tin đã cập nhật
-    $user->save();
-
-    // Quay lại với thông báo thành công
-    return redirect()->route('profile.adminProfile')->with('success', 'Thông tin đã được cập nhật thành công!');
-}
-
-    
-
 }

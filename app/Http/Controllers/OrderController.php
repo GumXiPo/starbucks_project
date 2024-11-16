@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Notification;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -63,17 +65,26 @@ class OrderController extends Controller
         // Gửi email xác nhận đơn hàng
         Mail::to(auth()->user()->email)->send(new OrderConfirmationMail($order));
 
+        // Tạo thông báo mới
+        Notification::create([
+            'message' => 'Đơn hàng mới đã được đặt bởi khách hàng ID: ' . $request->user()->id,
+        ]);
         // Chuyển hướng đến trang thành công
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công');
     }
 
     public function showmore($orderId)
+    {
+        // Lấy thông tin đơn hàng và kiểm tra lại products
+        $order = Order::with('user', 'products')->findOrFail($orderId);
+        // Giải mã JSON nếu cần thiết
+        $products = json_decode($order->products, true); // true để nhận kết quả là mảng
+        return view('orders.showmore', compact('order'));
+    }
+public function showNotifications()
 {
-    // Lấy thông tin đơn hàng và kiểm tra lại products
-    $order = Order::with('user', 'products')->findOrFail($orderId);
-      // Giải mã JSON nếu cần thiết
-      $products = json_decode($order->products, true); // true để nhận kết quả là mảng
-    return view('orders.showmore', compact('order'));
+    $notifications = Notification::orderBy('created_at', 'desc')->get();
+    return view('admins.dashboard', compact('notifications'));
 }
 
 
@@ -82,7 +93,7 @@ class OrderController extends Controller
 
     public function show()
     {
-        
+
         $orders = Order::all(); // Lấy tất cả đơn hàng
 
         return view('orders.index', compact('orders')); // Trả về view kèm theo danh sách đơn hàng
@@ -131,5 +142,24 @@ class OrderController extends Controller
         }
 
         return $total;
+    }
+    public function revenueChart()
+    {
+        // Lấy doanh thu từng tháng từ bảng orders
+        $revenueData = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total_amount) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        // Lấy dữ liệu doanh thu tháng
+        $months = [];
+        $totals = [];
+        foreach ($revenueData as $data) {
+            $months[] = $data->year . '-' . str_pad($data->month, 2, '0', STR_PAD_LEFT);
+            $totals[] = $data->total;
+        }
+
+        return view('orders.revenue_chart', compact('months', 'totals'));
     }
 }

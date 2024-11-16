@@ -10,6 +10,7 @@ use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NotificationController;
 
 // Route cho trang chủ
 Route::get('/', function () {
@@ -50,6 +51,10 @@ Route::middleware('auth')->group(function() {
   Route::get('/profile/admin', [ProfileController::class, 'adminProfile'])->name('profile.adminProfile');
   Route::get('profile/editadminProfile/{id}', [ProfileController::class, 'editadminProfile'])->name('profile.admin.editadminProfile');
   Route::post('/profile/admin/updateadminProfile', [ProfileController::class, 'updateadminProfile'])->name('profile.updateadminProfile');
+  Route::get('/profile/showadmin', [ProfileController::class, 'showadmin'])->name('profile.showadmin');
+
+
+
 });
 
 
@@ -77,13 +82,18 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/orders', [OrderController::class, 'show'])->name('orders.index');
+Route::get('/orders/revenue-chart', [OrderController::class, 'revenueChart'])->name('orders.revenueChart');
 Route::post('/orders/{orderId}/updateStatus', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 Route::get('/orders/showmore/{orderId}', [OrderController::class, 'showmore'])
     ->name('orders.showmore')
     ->withoutMiddleware(['auth']); // Tạm thời bỏ middleware auth để kiểm tra
+    
 
 
 // Route cho review sản phẩm
 Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
+//Route notifications
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 
+Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');

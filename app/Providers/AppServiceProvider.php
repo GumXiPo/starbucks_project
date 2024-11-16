@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\Notification;
+use Illuminate\Support\Facades\View;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Chia sẻ biến $notifications cho tất cả các view
+        View::composer('*', function ($view) {
+            $notifications = Notification::where('status', false)->get();
+            $view->with('notifications', $notifications);
+        });
     }
 }
