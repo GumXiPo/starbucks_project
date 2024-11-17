@@ -144,22 +144,26 @@ public function showNotifications()
         return $total;
     }
     public function revenueChart()
-    {
-        // Lấy doanh thu từng tháng từ bảng orders
-        $revenueData = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total_amount) as total')
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
+{
+    // Lấy doanh thu từng tháng từ bảng orders
+    $revenueData = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total_amount) as total')
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'desc')
+        ->orderBy('month', 'desc')
+        ->get();
 
-        // Lấy dữ liệu doanh thu tháng
-        $months = [];
-        $totals = [];
-        foreach ($revenueData as $data) {
-            $months[] = $data->year . '-' . str_pad($data->month, 2, '0', STR_PAD_LEFT);
-            $totals[] = $data->total;
-        }
-
-        return view('orders.revenue_chart', compact('months', 'totals'));
+    // Kiểm tra dữ liệu
+    $months = [];
+    $totals = [];
+    foreach ($revenueData as $data) {
+        $months[] = $data->year . '-' . str_pad($data->month, 2, '0', STR_PAD_LEFT);
+        $totals[] = $data->total;
     }
+
+    // Truyền dữ liệu vào view
+    return view('orders.revenue_chart', compact('months', 'totals'));
+    
+}
+
+    
 }

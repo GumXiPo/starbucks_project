@@ -2,20 +2,20 @@
 
   
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-    <div class="sidebar-brand-icon ">
-  <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto;">
-</div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admins.dashboard') }}">
+    <div class="sidebar-brand-icon">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: auto;">
+    </div>
+    <div class="sidebar-brand-text mx-3">STARBUCK</div>
+</a>
 
-      <div class="sidebar-brand-text mx-3" href="{{ route('dashboard') }}">STARBUCK </div>
-    </a>
   
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
   
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('orders.revenueChart') }}">
+      <a class="nav-link" href="{{ route('orders.revenue_chart') }}">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
     </li>
