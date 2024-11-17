@@ -77,25 +77,25 @@
 
     <h2>Danh Sách Phản Hồi</h2>
 
-    @if($feedbacks->count() > 0)
-    <ul class="list-group">
-        @foreach($feedbacks as $feedback)
-        <li class="list-group-item">
-            <strong>{{ $feedback->user->username }}:</strong>
-            {{ $feedback->message }}
-            <small class="text-muted">{{ $feedback->created_at->diffForHumans() }}</small>
-            <br>
+@if($feedbacks->count() > 0)
+<ul class="list-group">
+    @foreach($feedbacks as $feedback)
+    <li class="list-group-item">
+        <strong>{{ $feedback->user->username }}:</strong>
+        {{ $feedback->message }}
+        <small class="text-muted">{{ $feedback->created_at->diffForHumans() }}</small>
+        <br>
 
-            <strong>Đánh giá:</strong>
-            <!-- Hiển thị sao dựa trên rating -->
-            <div>
-                @for($i = 1; $i <= 5; $i++)
-                    <i class="fa-solid fa-star {{ $i <= $feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
-                    @endfor
-            </div>
-        </li>
-        @endforeach
-    </ul>
+        <strong>Đánh giá:</strong>
+        <!-- Hiển thị sao dựa trên rating -->
+        <div>
+            @for($i = 1; $i <= 5; $i++)
+                <i class="fa-solid fa-star {{ $i <= $feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
+            @endfor
+        </div>
+    </li>
+    @endforeach
+</ul>
 
     <!-- Pagination links -->
     {{ $feedbacks->links() }}

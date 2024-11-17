@@ -10,7 +10,14 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'total_amount', 'address', 'phone_number', 'name', 'email', 'note', 'products'
+        'user_id',
+        'total_amount',
+        'address',
+        'phone_number',
+        'name',
+        'email',
+        'note',
+        'products'
     ];
     protected $casts = [
         'order_date' => 'datetime',
@@ -25,5 +32,11 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+    // Model Order.php
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')
+                    ->withPivot('quantity', 'price_at_purchase', 'created_at', 'updated_at');
     }
 }

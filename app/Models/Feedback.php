@@ -11,10 +11,10 @@ class Feedback extends Model
 
     protected $fillable = ['user_id', 'message', 'rating'];
 
-    // Quan hệ với người dùng
+
     public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+{
+    return $this->belongsTo(User::class, 'user_id', 'id');  // 'user_id' là trường khóa ngoại, 'id' là khóa chính của bảng users
 }
 
+}
