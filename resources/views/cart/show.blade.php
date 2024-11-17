@@ -235,7 +235,7 @@
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right">{{ array_sum(array_map(function($item) { return $item['price'] * $item['quantity']; }, $cart)) }} VND</div>
                         </div>
-                        <button class="btn">CHECKOUT</button>
+                        <a href="{{ route('checkout') }}"><button class="btn">CHECKOUT</button></a>
                     </div>
                 </div>
             </div>

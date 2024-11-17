@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->text('note')->nullable(); // Ghi chú về đơn hàng, có thể để trống
             $table->decimal('total_amount', 10, 2); // Tổng tiền của đơn hàng, độ dài 10, độ chính xác 2
             $table->timestamp('order_date')->useCurrent(); // Ngày giờ tạo đơn hàng
-            $table->string('status', 50)->default('pending'); // Trạng thái đơn hàng, mặc định là 'pending'
+            $table->enum('status', ['pending', 'shipping', 'delivered', 'cancelled'])->default('pending'); // Các trạng thái mới
             $table->timestamps(); // Tạo cột created_at và updated_at
         });
     }

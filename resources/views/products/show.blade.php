@@ -624,31 +624,189 @@
             gap: 5px;
             direction: rtl;
             /* Đảo ngược thứ tự của các sao */
-            margin-right: 67%;
+        }
+        .feedback {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .star-rating input {
+        .feedback-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-item {
+            flex: 1 1 calc(33.33% - 20px); /* Hiển thị 3 cột */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-header {
+            display: flex;
+            /* justify-content: space-between; */
+            align-items: center;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .star-rating i {
+            margin-right: 2px;
+        }
+
+        .feedback-form {
+            margin-top: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .form-group mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .feedback-item p {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .card-footer {
+            font-size: 12px;
+            color: #888;
+        }
+        /* CSS cho sao đánh giá trong form */
+        .star-rating {
+            display: flex;
+            /* justify-content: space-around; */
+            float: left;
+            cursor: pointer;
+        }
+
+        .star-rating input[type="radio"] {
             display: none;
         }
 
         .star-rating label {
-            font-size: 1.5em;
-            color: #ddd;
-            cursor: pointer;
+            font-size: 30px;
+            color: #ddd; /* Màu xám cho sao mặc định */
+            transition: color 0.3s ease;
         }
 
-        .star-rating input:checked~label,
+        /* Khi hover hoặc sao đã được chọn */
+        .star-rating input[type="radio"]:checked ~ label,
         .star-rating label:hover,
-        .star-rating label:hover~label {
-            color: #f39c12;
-            /* Màu vàng khi hover hoặc được chọn */
+        .star-rating label:hover ~ label {
+            color: #f39c12; /* Màu vàng khi hover hoặc chọn sao */
         }
 
-        .star-rating label i {
-            font-size: 1.5em;
-            /* Điều chỉnh kích thước sao */
+        /* Sao đã được chọn */
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f39c12; /* Màu vàng cho sao đã chọn */
         }
-    
+
+        /* CSS cho sao đã được đánh giá (phần hiển thị đánh giá của khách hàng) */
+        .star-rating-review{
+            margin-left: 10px;
+        }
+        .star-rating-review i {
+            font-size: 15px;
+            color: #ddd; /* Màu xám cho sao chưa đánh giá */
+        }
+
+        .star-rating-review .rated {
+            color: #f39c12; /* Màu vàng cho sao đã đánh giá */
+            font-size: 15px;
+        }
+
+        /* Mặc định sao không được đánh giá sẽ là xám, các sao đã được đánh giá sẽ là vàng */
+        .star-rating-review .rated i {
+                    color: #f39c12;
+                }
+                /* Tổng thể cho form đánh giá */
+        .feedback-form {
+            width: 100%;
+            margin: 20px auto; /* Căn giữa form */
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Căn giữa phần đánh giá sao */
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Định dạng ngôi sao */
+        .star-rating label {
+            font-size: 24px; /* Kích thước ngôi sao */
+            color: #ccc; /* Màu ngôi sao mặc định */
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none; /* Ẩn input radio */
+        }
+
+        /* Ngôi sao được chọn */
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc107; /* Màu ngôi sao khi được chọn hoặc hover */
+        }
+
+        /* Textarea */
+        textarea#comment {
+            width: 100%;
+            resize: none; /* Không cho phép thay đổi kích thước */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea#comment:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* Nút gửi phản hồi */
+        .btn.btn-primary {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #608BC1;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn.btn-primary:hover {
+            background-color: #C5D3E8;
+        }
+
     </style>
 </head>
 
@@ -722,191 +880,177 @@
             </div>
         </div>
     </div>
-    <div class="container">
-    <h1>{{ $product->name }}</h1>
-    <p>{{ $product->description }}</p>
-    <p>Giá: {{ number_format($product->price, 0, ',', '.') }} VND</p>
-
-    <hr>
-
-    <h3>Phản hồi của khách hàng</h3>
-
-    <!-- Hiển thị thông báo nếu phản hồi thành công -->
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Form gửi phản hồi -->
-    @auth
-    <div class="card mb-4">
-        <div class="card-header">
-            Gửi phản hồi
-        </div>
-        <div class="card-body">
-            <form action="{{ route('reviews.store', $product->product_id) }}" method="POST">
-                @csrf
-                <div class="form-group mb-3">
-                    <!-- Star Rating -->
-                    <div class="star-rating">
-                        <input type="radio" id="star5" name="rating" value="5" />
-                        <label for="star5" title="5 sao"><i class="fa-solid fa-star text-warning"></i></label>
-
-                        <input type="radio" id="star4" name="rating" value="4" />
-                        <label for="star4" title="4 sao"><i class="fa-solid fa-star text-warning"></i></label>
-
-                        <input type="radio" id="star3" name="rating" value="3" />
-                        <label for="star3" title="3 sao"><i class="fa-solid fa-star text-warning"></i></label>
-
-                        <input type="radio" id="star2" name="rating" value="2" />
-                        <label for="star2" title="2 sao"><i class="fa-solid fa-star text-warning"></i></label>
-
-                        <input type="radio" id="star1" name="rating" value="1" />
-                        <label for="star1" title="1 sao"><i class="fa-solid fa-star text-warning"></i></label>
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="comment">Phản hồi</label>
-                    <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
-            </form>
-        </div>
-    </div>
-    @else
-    <p><a href="{{ route('login') }}">Đăng nhập</a> để gửi phản hồi.</p>
-    @endauth
-
-    <hr>
-
-    <!-- Hiển thị các phản hồi -->
-    @if($product->reviews->count() > 0)
-        <div class="row">
-            @foreach($product->reviews as $review)
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $review->user->username }}</h5>
-
+    <div class="feedback">
+        <h3>Product Ratings</h3>
+        <!-- Hiển thị các phản hồi -->
+        <div class="feedback-list">
+            @if($product->reviews->count() > 0)
+                @foreach($product->reviews as $review)
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <h5 class="username">{{ $review->user->username }}</h5>
                         <!-- Hiển thị sao đánh giá -->
-                        <div class="star-rating">
+                        <div class="star-rating-review">
                             @for ($i = 1; $i <= 5; $i++)
                                 @if($i <= $review->rating)
-                                    <i class="fa-solid fa-star text-warning"></i> <!-- Sao đầy màu vàng -->
+                                    <i class="fa-solid fa-star rated"></i> <!-- Sao đã đánh giá, màu vàng -->
                                 @else
-                                    <i class="fa-regular fa-star text-warning"></i> <!-- Sao rỗng màu vàng -->
+                                    <i class="fa-regular fa-star"></i> <!-- Sao chưa đánh giá, màu xám -->
                                 @endif
                             @endfor
                         </div>
-
-                        <p class="card-text">{{ $review->comment }}</p>
                     </div>
+                    <p class="card-text">{{ $review->comment }}</p>
                     <div class="card-footer text-muted">
                         {{ $review->created_at->format('d/m/Y') }}
                     </div>
                 </div>
-            </div>
-            @endforeach
+                @endforeach
+            @else
+                <p>Chưa có phản hồi nào cho sản phẩm này.</p>
+            @endif
         </div>
-    @else
-        <p>Chưa có phản hồi nào cho sản phẩm này.</p>
-    @endif
-</div>
 
+        <hr>
 
+        <!-- Form gửi phản hồi -->
+        @auth
+        <div class="feedback-form">
+            <div class="card-body">
+                <form action="{{ route('reviews.store', $product->product_id) }}" method="POST">
+                    @csrf
+                    <div class="form-group mb-3">
+                        <!-- Star Rating -->
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 sao">
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 sao">
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 sao">
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 sao">
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 sao">
+                                <i class="fa-solid fa-star"></i>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" sty>Send feedback</button>
+                </form>
+            </div>
+        </div>
+        @else
+        <p><a href="{{ route('login') }}">Đăng nhập</a> để gửi phản hồi.</p>
+        @endauth
+    </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-    let selectedSize = null;
-    let selectedSugar = '50'; // Giá trị đường mặc định
-    const originalPrice = {{ $product->price }}; // Lấy giá gốc từ server
-    let currentPrice = originalPrice;
+            let selectedSize = null;
+            let selectedSugar = '50'; // Giá trị đường mặc định
+            const originalPrice = {{ $product->price }}; // Lấy giá gốc từ server
+            let currentPrice = originalPrice;
 
-    // Hệ số điều chỉnh giá cho từng size
-    const sizeAdjustments = {
-        'S': 1,     // Giá gốc cho size S
-        'M': 1.2,   // Giá tăng 20% cho size M
-        'L': 1.5,   // Giá tăng 50% cho size L
-        'XL': 1.7   // Giá tăng 70% cho size XL
-    };
+            // Hệ số điều chỉnh giá cho từng size
+            const sizeAdjustments = {
+                'S': 1,     // Giá gốc cho size S
+                'M': 1.2,   // Giá tăng 20% cho size M
+                'L': 1.5,   // Giá tăng 50% cho size L
+                'XL': 1.7   // Giá tăng 70% cho size XL
+            };
 
-    // Chọn size
-    document.querySelectorAll('.size-option').forEach(option => {
-        option.addEventListener('click', function () {
-            document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedSize = option.dataset.size;
+            // Chọn size
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedSize = option.dataset.size;
 
-            // Tính giá dựa trên size đã chọn
-            currentPrice = originalPrice * (sizeAdjustments[selectedSize] || 1);
-            updatePriceDisplay();
+                    // Tính giá dựa trên size đã chọn
+                    currentPrice = originalPrice * (sizeAdjustments[selectedSize] || 1);
+                    updatePriceDisplay();
+                });
+            });
+
+            // Chọn mức đường
+            document.querySelectorAll('.sugar-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.sugar-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedSugar = option.dataset.sugar;
+                });
+            });
+
+            // Điều khiển số lượng
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+
+            document.querySelector('[data-quantity-minus]').addEventListener('click', function () {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityInput.value = quantity;
+                }
+            });
+
+            document.querySelector('[data-quantity-plus]').addEventListener('click', function () {
+                quantity++;
+                quantityInput.value = quantity;
+            });
+
+            // Hàm cập nhật hiển thị giá
+            function updatePriceDisplay() {
+                document.querySelector('.price h1').textContent = `${currentPrice.toLocaleString()} VND`;
+            }
+
+            // Sự kiện thêm vào giỏ hàng
+            document.getElementById('add-to-cart-btn').addEventListener('click', function () {
+                if (!selectedSize) {
+                    alert('Vui lòng chọn size');
+                    return;
+                }
+
+                const quantity = quantityInput.value || 1;
+                addToCart(selectedSize, selectedSugar, quantity, currentPrice);
+            });
+
+            function addToCart(size, sugar, quantity, price) {
+                const productId = {{ $product->product_id }};
+
+                fetch(`{{ route('cart.add', ':productId') }}`.replace(':productId', productId), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ size, sugar, quantity, price })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Sản phẩm đã được thêm vào giỏ hàng');
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                });
+            }
         });
-    });
-
-    // Chọn mức đường
-    document.querySelectorAll('.sugar-option').forEach(option => {
-        option.addEventListener('click', function () {
-            document.querySelectorAll('.sugar-option').forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedSugar = option.dataset.sugar;
-        });
-    });
-
-    // Điều khiển số lượng
-    const quantityInput = document.getElementById('quantity');
-    let quantity = parseInt(quantityInput.value);
-
-    document.querySelector('[data-quantity-minus]').addEventListener('click', function () {
-        if (quantity > 1) {
-            quantity--;
-            quantityInput.value = quantity;
-        }
-    });
-
-    document.querySelector('[data-quantity-plus]').addEventListener('click', function () {
-        quantity++;
-        quantityInput.value = quantity;
-    });
-
-    // Hàm cập nhật hiển thị giá
-    function updatePriceDisplay() {
-        document.querySelector('.price h1').textContent = `${currentPrice.toLocaleString()} VND`;
-    }
-
-    // Sự kiện thêm vào giỏ hàng
-    document.getElementById('add-to-cart-btn').addEventListener('click', function () {
-        if (!selectedSize) {
-            alert('Vui lòng chọn size');
-            return;
-        }
-
-        const quantity = quantityInput.value || 1;
-        addToCart(selectedSize, selectedSugar, quantity, currentPrice);
-    });
-
-    function addToCart(size, sugar, quantity, price) {
-        const productId = {{ $product->product_id }};
-
-        fetch(`{{ route('cart.add', ':productId') }}`.replace(':productId', productId), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ size, sugar, quantity, price })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Sản phẩm đã được thêm vào giỏ hàng');
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-        });
-    }
-});
-
     </script>
 </body>
 

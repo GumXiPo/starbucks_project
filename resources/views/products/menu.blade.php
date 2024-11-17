@@ -88,9 +88,7 @@
             transition: transform .4s;
         }
         .card__data {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
+
         transition: transform .4s, opacity .4s;
         }
 
@@ -377,6 +375,9 @@
             background-color: #e8f5e9; /* Màu nền khi focus */
             border-color: #4caf50; /* Màu viền khi focus */
         }
+        .main{
+            display: flex;
+        }
         /*=============== BREAKPOINTS ===============*/
         /* For small devices */
         @media screen and (max-width: 300px) {
@@ -405,48 +406,47 @@
 </head>
 <body>
     @include('layouts.header')
-    <div class="menu-search-container">
-        <h1>Menu</h1>
-        <form class="form" action="{{ route('product.search') }}" method="GET">
-            <input class="input" placeholder="Search" type="text" name="search" value="{{ request('search') }}">
-            
-            <!-- Dropdown chọn sắp xếp -->
-            <select name="sort" class="input" onchange="this.form.submit()">
-                <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>A-Z Names</option>
-                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Z-A Names</option>
-                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
-                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
-            </select>
+        <div class="product-menu">
+            <div class="menu-search-container">
+                <h1>Menu</h1>
+                <form class="form" action="{{ route('product.search') }}" method="GET">
+                    <input class="input" placeholder="Search" type="text" name="search" value="{{ request('search') }}">
+                    
+                    <!-- Dropdown chọn sắp xếp -->
+                    <select name="sort" class="input" onchange="this.form.submit()">
+                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>A-Z Names</option>
+                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Z-A Names</option>
+                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
+                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
+                    </select>
 
-            <button class="reset" type="reset">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </form>
-    </div>
-
-    <div class="product-menu">
-        @if($products->isEmpty())
-            <p>Không có sản phẩm nào phù hợp với tìm kiếm của bạn.</p>
-        @else
-            <div class="card__container">
-                @foreach($products as $product)
-                    <article class="card__article">
-                        <img src="{{ asset('images/product/' . $product->image) }}" alt="{{ $product->name }}" class="card__img">
-                        <div class="card__data">
-                            <h3 class="card__title">{{ $product->name }}</h3>
-                            <span class="card__price">{{ number_format($product->price, 0, ',', '.') }} VNĐ</span>
-                        </div>
-                        <img src="{{ asset('images/bg-starbuck.jpg') }}" alt="image" class="card__bg">
-                        <a href="{{ route('product.show', ['product_id' => $product->product_id]) }}" class="card__button">See More <i class="ri-arrow-right-line"></i></a>
-                    </article>
-                @endforeach
+                    <button class="reset" type="reset">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </form>
             </div>
-            <div class="pagination">
-                {{ $products->links() }}
-            </div>
-        @endif
-    </div>
+            @if($products->isEmpty())
+                <p>Không có sản phẩm nào phù hợp với tìm kiếm của bạn.</p>
+            @else
+                <div class="card__container">
+                    @foreach($products as $product)
+                        <article class="card__article">
+                            <img src="{{ asset('images/product/' . $product->image) }}" alt="{{ $product->name }}" class="card__img">
+                            <div class="card__data">
+                                <h3 class="card__title">{{ $product->name }}</h3>
+                                <span class="card__price">{{ number_format($product->price, 0, ',', '.') }} VNĐ</span>
+                            </div>
+                            <img src="{{ asset('images/bg-starbuck.jpg') }}" alt="image" class="card__bg">
+                            <a href="{{ route('product.show', ['product_id' => $product->product_id]) }}" class="card__button">See More <i class="ri-arrow-right-line"></i></a>
+                        </article>
+                    @endforeach
+                </div>
+                <div class="pagination">
+                    {{ $products->links() }}
+                </div>
+            @endif
+        </div>
 </body>
 </html>

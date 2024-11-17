@@ -18,14 +18,22 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $query = Product::query();
-
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+    
+        // Lọc theo từ khóa tìm kiếm
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
         }
-
-        // Thêm logic sắp xếp
+    
+        // Lọc theo khoảng giá
+        if ($request->has('price_range') && $request->input('price_range') != '') {
+            $maxPrice = $request->input('price_range');
+            $query->where('price', '<=', $maxPrice);
+        }
+    
+        // Lọc theo sắp xếp
         if ($request->has('sort')) {
-            switch ($request->sort) {
+            $sort = $request->input('sort');
+            switch ($sort) {
                 case 'name_asc':
                     $query->orderBy('name', 'asc');
                     break;
@@ -38,16 +46,15 @@ class ProductController extends Controller
                 case 'price_desc':
                     $query->orderBy('price', 'desc');
                     break;
-                default:
-                    break;
             }
         }
-
+    
+        // Lấy danh sách sản phẩm
         $products = $query->paginate(12);
-
+    
         return view('products.menu', compact('products'));
     }
-
+    
     public function index()
     {
         // Lấy tất cả sản phẩm từ database
